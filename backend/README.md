@@ -32,6 +32,16 @@
 $ npm install
 ```
 
+## Add environment variables
+
+```javascript
+DB_URI=''
+JWT_SECRET=''
+// ['1h', '7h', '1d']
+JWT_EXPIRES_IN=''
+```
+
+
 ## Running the app
 
 ```bash

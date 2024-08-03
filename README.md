@@ -1,10 +1,14 @@
-# Study Share 🚀⚡
+<h1 align="center">
+  🚀 Study Share 🚀
+</h1>
+
+## Technologies 🧑🏻‍💻🛠️
 
     - ReactJs Redux
     - NestJS Mongoose
     - MongoDB
 
-# Fonctionalités de l'MVP 💪💪
+## Fonctionalités de l'MVP 💪💪
 
     - Authentification avec email/mot de passe
 
@@ -24,9 +28,9 @@
 
     - Partage de fichiers (pdf, img) sur les posts et chat privé ( `ce n'est pas une priorité` )
 
-# Structure de la base de données 💾 🗂️
+## Structure de la base de données 💾 🗂️
 
-## Collection `Users` 📄
+### Collection `Users` 📄
 
 ```json
 {
@@ -39,7 +43,7 @@
 }
 ```
 
-## Collection `Posts` 📄
+### Collection `Publications` 📄
 
 ```json
 {
@@ -59,7 +63,7 @@
 }
 ```
 
-## Collection `Comments` 📄
+### Collection `Comments` 📄
 
 ```json
 {
@@ -70,7 +74,7 @@
 }
 ```
 
-## Collection `Chats` 📄
+### Collection `Chats` 📄
 
 ```json
 {
@@ -96,7 +100,7 @@
 }
 ```
 
-## Collection `Notifications` 📄
+### Collection `Notifications` 📄
 
 ```json
 {
