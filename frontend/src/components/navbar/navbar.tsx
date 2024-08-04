@@ -1,12 +1,12 @@
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./navbar.css";
+import "./Navbar.css";
 
 export default function Navbar() {
   return (
-    <div>
-      <nav className="navbar navbar-expand-md navbar-light bg-light p-0">
-        <div className="container-fluid px-5 pb-md-0 pb-2">
+    <>
+      <nav className="navbar navbar-expand-md navbar-light gradient-light-vertical p-0 fixed-top">
+        <div className="container-fluid px-5 pb-0">
           <div>
             <a href="#">
               <img
@@ -31,24 +31,36 @@ export default function Navbar() {
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">
-                  Home
+                  Accueil
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Link
+                  Messages
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Profil
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Notifications
                 </a>
               </li>
             </ul>
             <div className="col">
-              <div className="float-end">
-                <button className="btn btn-outline-primary mx-1">Login</button>
-                <button className="btn btn-primary">Sign up</button>
+              <div className="float-end pb-md-0 pb-2">
+                <button className="btn btn-outline-primary mx-2">
+                  Se connecter
+                </button>
+                <button className="btn btn-primary ">S'inscrire</button>
               </div>
             </div>
           </div>
         </div>
       </nav>
-    </div>
+    </>
   );
 }
