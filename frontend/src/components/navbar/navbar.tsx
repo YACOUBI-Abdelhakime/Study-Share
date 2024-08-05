@@ -1,8 +1,10 @@
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 import "./Navbar.css";
 
 export default function Navbar() {
+  const { t } = useTranslation();
   return (
     <>
       <nav className="navbar navbar-expand-md navbar-light gradient-light-vertical p-0 fixed-top">
@@ -31,31 +33,31 @@ export default function Navbar() {
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">
-                  Accueil
+                  {t("home")}
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Messages
+                  {t("messages")}
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Profil
+                  {t("profile")}
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Notifications
+                  {t("notifications")}
                 </a>
               </li>
             </ul>
             <div className="col">
               <div className="float-end pb-md-0 pb-2">
                 <button className="btn btn-outline-primary mx-2">
-                  Se connecter
+                  {t("login")}
                 </button>
-                <button className="btn btn-primary ">S'inscrire</button>
+                <button className="btn btn-primary">{t("signup")}</button>
               </div>
             </div>
           </div>

@@ -1,0 +1,16 @@
+{
+  "signupPrompt": "Nouveau ici ?",
+  "signupDescription": "Inscrivez-vous pour rejoindre notre communauté et obtenir de l'aide sur vos études !",
+  "signup": "S'inscrire",
+  "login": "Se connecter",
+  "loginTitle": "Connectez-vous à votre compte",
+  "socialLogin": "Se connecter via les réseaux sociaux",
+  "forgotPassword": "Mot de passe oublié !",
+  "notifications": "Notifications",
+  "profile": "Profil",
+  "messages": "Messages",
+  "home": "Accueil",
+  "email": "Email",
+  "password": "Mot de passe",
+  "or": "Ou"
+}
