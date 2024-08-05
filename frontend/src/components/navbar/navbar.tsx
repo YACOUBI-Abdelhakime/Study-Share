@@ -2,6 +2,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -10,13 +11,13 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-md navbar-light gradient-light-vertical p-0 fixed-top">
         <div className="container-fluid px-5 pb-0">
           <div>
-            <a href="#">
+            <Link to="/">
               <img
                 src="./src/assets/logo-1x2.svg"
                 alt="Study Share Logo"
                 className="navbar-logo"
               />
-            </a>
+            </Link>
           </div>
           <button
             className="navbar-toggler"
@@ -32,32 +33,34 @@ export default function Navbar() {
           <div className="collapse navbar-collapse" id="navbarContent">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link className="nav-link active" to="/">
                   {t("home")}
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link active" to="/messages">
                   {t("messages")}
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link active" to="/profile">
                   {t("profile")}
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link active" to="/notifications">
                   {t("notifications")}
-                </a>
+                </Link>
               </li>
             </ul>
             <div className="col">
               <div className="float-end pb-md-0 pb-2">
-                <button className="btn btn-outline-primary mx-2">
+                <Link className="btn btn-outline-primary mx-2" to="/login">
                   {t("login")}
-                </button>
-                <button className="btn btn-primary">{t("signup")}</button>
+                </Link>
+                <Link className="btn btn-primary" to="/register">
+                  {t("signup")}
+                </Link>
               </div>
             </div>
           </div>

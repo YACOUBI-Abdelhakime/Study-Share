@@ -1,16 +1,22 @@
 {
   "signupPrompt": "Nouveau ici ?",
-  "signupDescription": "Inscrivez-vous pour rejoindre notre communauté et obtenir de l'aide sur vos études !",
+  "signupTitle": "Créez un Nouveau Compte",
+  "signupDescription": "Inscrivez-vous pour accéder à toutes nos fonctionnalités et rejoindre notre communauté d'utilisateurs passionnés",
+  "signupDescriptionSmall": "Inscrivez-vous pour rejoindre notre communauté et obtenir de l'aide sur vos études !",
   "signup": "S'inscrire",
   "login": "Se connecter",
   "loginTitle": "Connectez-vous à votre compte",
+  "loginTitleInfo": "Déjà un Compte ?",
+  "loginDescriptionInfo": "Connectez-vous pour accéder à votre espace personnel et profiter de toutes les fonctionnalités offertes",
   "socialLogin": "Se connecter via les réseaux sociaux",
   "forgotPassword": "Mot de passe oublié !",
   "notifications": "Notifications",
   "profile": "Profil",
   "messages": "Messages",
   "home": "Accueil",
+  "name": "Nom",
   "email": "Email",
   "password": "Mot de passe",
+  "confirmation": "Confirmation mot de passe",
   "or": "Ou"
 }
