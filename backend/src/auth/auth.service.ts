@@ -22,7 +22,11 @@ export class AuthService {
 
   async login(login: LoginDto): Promise<{ token: string }> {
     let user = await this.userModel.findOne({ email: login.email });
-    let match: boolean = await bcrypt.compare(login.password, user.password);
+    let match: boolean = false;
+
+    if (user) {
+      match = await bcrypt.compare(login.password, user.password);
+    }
 
     if (!match) {
       throw new UnauthorizedException('Email or password not correct !');
