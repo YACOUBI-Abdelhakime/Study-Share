@@ -5,9 +5,43 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { LoginDto } from "../../../features/user/types/LoginDto";
+import { login } from "../../../features/user/asyncThunks";
+import { AppDispatch } from "../../../main";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch: AppDispatch = useDispatch();
+  const [loginData, setLoginData] = useState<LoginDto>({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+
+  let onUpdateLoginData = (e: any) => {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  let onSubmitLogin = (e: any, user: LoginDto) => {
+    e.preventDefault();
+
+    dispatch(login(user))
+      .unwrap()
+      .then(() => {
+        navigate("/home");
+      })
+      .catch(() => {
+        setError(t("emailOrPasswordIncorrect"));
+      });
+  };
   return (
     <div className="col-12 col-md-7 bg-primary p-0">
       <div className="h-100 d-flex align-items-center justify-content-center bg-light">
@@ -16,7 +50,6 @@ export default function LoginForm() {
             <h2 className="fw-bold fs-1">{t("loginTitle")}</h2>
             <p>{t("socialLogin")}</p>
           </div>
-
           <div className="d-flex justify-content-center my-3">
             <a className="mx-2" type="button">
               <FontAwesomeIcon
@@ -45,14 +78,21 @@ export default function LoginForm() {
             <p className="text-center mx-3">{t("or")}</p>
             <hr className="w-100" />
           </div>
+          {error && (
+            <div className="text-center d-flex justify-content-center">
+              <p className="text-danger">{error}</p>
+            </div>
+          )}
           <form>
             <div className="mb-3">
               <input
                 type="email"
                 placeholder={t("email")}
                 className="form-control"
-                id="exampleInputEmail1"
                 aria-describedby="emailHelp"
+                name="email"
+                value={loginData.email}
+                onChange={onUpdateLoginData}
                 required
               />
             </div>
@@ -61,7 +101,9 @@ export default function LoginForm() {
                 placeholder={t("password")}
                 type="password"
                 className="form-control"
-                id="exampleInputPassword1"
+                name="password"
+                value={loginData.password}
+                onChange={onUpdateLoginData}
                 required
               />
             </div>
@@ -72,6 +114,12 @@ export default function LoginForm() {
               <button
                 type="submit"
                 className="btn btn-primary gradient-primary w-100 text-white"
+                onClick={(e) =>
+                  onSubmitLogin(e, {
+                    email: loginData.email,
+                    password: loginData.password,
+                  })
+                }
               >
                 {t("login")}
               </button>

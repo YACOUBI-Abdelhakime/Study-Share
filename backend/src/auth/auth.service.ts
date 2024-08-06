@@ -32,8 +32,13 @@ export class AuthService {
       throw new UnauthorizedException('Email or password not correct !');
     }
     let token: string = this.jwtService.sign({
-      id: user._id,
-      email: user.email,
+      user: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        dateOfBirth: user.dateOfBirth,
+        isVerified: user.isVerified,
+      },
     });
 
     return { token };
