@@ -4,14 +4,13 @@ import {
   faSquareGooglePlus,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { LoginDto } from "../../../features/user/types/LoginDto";
-import { login } from "../../../features/user/asyncThunks";
-import { AppDispatch } from "../../../main";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { login } from "../../../features/user/asyncThunks";
+import { LoginDto } from "../../../features/user/types/dtos/LoginDto";
+import { AppDispatch } from "../../../main";
 
 export default function LoginForm() {
   const navigate = useNavigate();

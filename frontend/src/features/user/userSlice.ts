@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "./asyncThunks";
+import { login, register } from "./asyncThunks";
 import { UserState } from "./types/UserState";
 
 const initialState: UserState = {
@@ -30,8 +30,18 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         console.log(action.payload);
-        // TODO: Handle errors
-        // Show error message to user
+        state.isLoading = false;
+      })
+      // User Register
+      .addCase(register.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
+        console.log(action.payload);
         state.isLoading = false;
       });
   },

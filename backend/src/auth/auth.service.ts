@@ -21,7 +21,9 @@ export class AuthService {
   ) {}
 
   async login(login: LoginDto): Promise<{ token: string }> {
-    let user = await this.userModel.findOne({ email: login.email });
+    let user = await this.userModel.findOne({
+      email: login.email.toLowerCase(),
+    });
     let match: boolean = false;
 
     if (user) {
@@ -44,17 +46,29 @@ export class AuthService {
     return { token };
   }
 
-  async register(user: RegisterDto): Promise<User> {
+  async register(user: RegisterDto): Promise<{ token: string }> {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
     user.isVerified = false;
+    user.email = user.email.toLowerCase();
 
-    let createdUser: User;
+    let createdUser;
     try {
       createdUser = await this.userModel.create(user);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-    return createdUser;
+
+    let token: string = this.jwtService.sign({
+      user: {
+        _id: createdUser._id,
+        email: createdUser.email,
+        name: createdUser.name,
+        dateOfBirth: createdUser.dateOfBirth,
+        isVerified: createdUser.isVerified,
+      },
+    });
+
+    return { token };
   }
 }

@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { User } from "./types/User";
-import { LoginDto } from "./types/LoginDto";
+import { LoginDto } from "./types/dtos/LoginDto";
 import { jwtDecode } from "jwt-decode";
+import { SignupDto } from "./types/dtos/SignupDto";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/",
@@ -27,10 +28,14 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   "userReducer/register",
-  async (user: User, thunkAPI) => {
+  async (user: SignupDto, thunkAPI) => {
     try {
       const response = await api.post("/auth/register", user);
-      return response.data;
+      const tokenPayload: any = jwtDecode(response.data.token);
+      const createdUser: User = tokenPayload.user;
+      // Save token in local storage
+      localStorage.setItem("token", response.data.token);
+      return createdUser;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
