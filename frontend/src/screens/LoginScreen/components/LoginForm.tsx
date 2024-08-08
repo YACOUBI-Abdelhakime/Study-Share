@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../features/user/asyncThunks";
 import { LoginDto } from "../../../features/user/types/dtos/LoginDto";
-import { AppDispatch } from "../../../main";
+import { AppDispatch } from "../../../store";
 
 export default function LoginForm() {
   const navigate = useNavigate();

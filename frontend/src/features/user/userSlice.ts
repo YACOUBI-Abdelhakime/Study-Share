@@ -4,7 +4,7 @@ import { UserState } from "./types/UserState";
 
 const initialState: UserState = {
   user: null,
-  isLoading: true,
+  isLoading: false,
 };
 
 const userSlice = createSlice({

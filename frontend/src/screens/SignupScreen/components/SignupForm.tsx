@@ -15,7 +15,7 @@ import {
   validatePasswordConfirmation,
 } from "../../../utils/formValidations/FormValidations";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../main";
+import { AppDispatch } from "../../../store";
 import { register } from "../../../features/user/asyncThunks";
 import { useNavigate } from "react-router-dom";
 
