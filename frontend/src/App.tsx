@@ -5,6 +5,7 @@ import SignupScreen from "./screens/SignupScreen/SignupScreen";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 import { useSelector } from "react-redux";
+import HomeScreen from "./screens/HomeScreen/HomeScreen";
 
 function App() {
   const isSignedIn = useSelector(
@@ -36,16 +37,16 @@ function App() {
             path="/"
             element={
               <ProtectRoute isSignedIn={isSignedIn}>
-                <div>Home</div>
+                <HomeScreen />
               </ProtectRoute>
             }
           ></Route>
           <Route
             path="/home"
             element={
-              <ProtectRoute isSignedIn={isSignedIn}>
-                <div>Home</div>
-              </ProtectRoute>
+              // <ProtectRoute isSignedIn={isSignedIn}>
+              <HomeScreen />
+              // </ProtectRoute>
             }
           ></Route>
           <Route
