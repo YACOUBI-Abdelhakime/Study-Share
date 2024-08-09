@@ -3,4 +3,5 @@ export interface User {
   dateOfBirth: string;
   isVerified: boolean;
   email: string;
+  token: string;
 }

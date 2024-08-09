@@ -1,12 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { faCircleUser, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 export default function PublicationComponent({
   publication,
 }: {
   publication: Publication;
 }) {
+  const { t } = useTranslation();
+  let createdAt: Date = new Date(publication.createdAt);
+  let publicationDate: string =
+    createdAt.getDate() +
+    "/" +
+    (createdAt.getMonth() + 1) +
+    "/" +
+    createdAt.getFullYear();
+
   return (
     <div className="py-2 px-3 px-sm-5">
       <div className="card">
@@ -26,13 +36,13 @@ export default function PublicationComponent({
                   {publication.userName}
                 </p>
                 <p className="my-0 text-start" style={{ fontSize: "11px" }}>
-                  {publication.publicationDate}
+                  {publicationDate}
                 </p>
               </div>
             </div>
             {!publication.isDiscussionOpen && (
               <div className="">
-                <span className="my-0">Discussion fermée</span>
+                <span className="my-0">{t("discussionClosed")}</span>
               </div>
             )}
           </div>
@@ -55,7 +65,7 @@ export default function PublicationComponent({
                 style={{ color: "#c2bdbd" }}
               />
               <span className="my-0 text-start">
-                {publication.commentCount}
+                {publication.commentsCount}
               </span>
             </div>
             {publication.isDiscussionOpen && (
@@ -67,7 +77,7 @@ export default function PublicationComponent({
                     // open comment panel
                   }}
                 >
-                  Commenter
+                  {t("commentate")}
                 </span>
               </div>
             )}

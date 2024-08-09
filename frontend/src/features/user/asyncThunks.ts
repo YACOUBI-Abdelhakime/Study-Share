@@ -16,9 +16,8 @@ export const login = createAsyncThunk(
     try {
       const response = await api.post("/auth/login", login);
       const tokenPayload: any = jwtDecode(response.data.token);
-      const user: User = tokenPayload.user;
-      // Save token in local storage
-      localStorage.setItem("token", response.data.token);
+      let user: User = tokenPayload.user;
+      user.token = response.data.token;
       return user;
     } catch (error: any) {
       return thunkAPI.rejectWithValue("something went wrong");
@@ -32,9 +31,8 @@ export const register = createAsyncThunk(
     try {
       const response = await api.post("/auth/register", user);
       const tokenPayload: any = jwtDecode(response.data.token);
-      const createdUser: User = tokenPayload.user;
-      // Save token in local storage
-      localStorage.setItem("token", response.data.token);
+      let createdUser: User = tokenPayload.user;
+      createdUser.token = response.data.token;
       return createdUser;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");

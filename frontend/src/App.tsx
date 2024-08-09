@@ -11,7 +11,6 @@ function App() {
   const isSignedIn = useSelector(
     (state: any) => state.userReducer.user != null
   );
-  console.log("isSignedIn > " + isSignedIn);
   return (
     <BrowserRouter>
       <Navbar />
