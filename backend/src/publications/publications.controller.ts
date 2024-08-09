@@ -15,6 +15,7 @@ import { Publication } from './schemas/publication.schema';
 import { PublicationsService } from './publications.service';
 import { Request } from 'express';
 import { UpdatePublicationsDto } from './dtos/update.publication.dto';
+import { User } from 'src/users/schemas/user.schema';
 
 @Controller('publications')
 export class PublicationsController {

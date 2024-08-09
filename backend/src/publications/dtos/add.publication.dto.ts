@@ -1,9 +1,10 @@
 import { IsEmpty, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { Types } from 'mongoose';
 import { PublicationTagEnum } from '../types/publication.tag.enum';
 
 export class AddPublicationsDto {
   @IsEmpty()
-  userId: string;
+  userId: Types.ObjectId;
 
   @IsNotEmpty()
   @IsString()
@@ -14,10 +15,10 @@ export class AddPublicationsDto {
   content: string;
 
   @IsEmpty()
-  commentsCount: any;
+  commentsCount: number;
 
   @IsEmpty()
-  status: any;
+  isDiscussionOpen: boolean;
 
   @IsNotEmpty()
   @IsEnum(PublicationTagEnum, {

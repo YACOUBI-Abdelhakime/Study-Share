@@ -1,17 +1,16 @@
 import {
+  IsBoolean,
   IsEmpty,
   IsEnum,
-  IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Types } from 'mongoose';
 import { PublicationTagEnum } from '../types/publication.tag.enum';
-import { PublicationStatusEnum } from '../types/publication.status.enum';
 
 export class UpdatePublicationsDto {
   @IsEmpty()
-  userId: string;
+  userId: Types.ObjectId;
 
   @IsOptional()
   @IsString()
@@ -21,16 +20,12 @@ export class UpdatePublicationsDto {
   @IsString()
   content: string;
 
-  @IsOptional()
-  @IsNumber()
-  commentsCount: any;
+  @IsEmpty()
+  commentsCount: number;
 
   @IsOptional()
-  @IsEnum(PublicationStatusEnum, {
-    each: true,
-    message: `Status must be one of the following values: [${Object.values(PublicationStatusEnum).join(', ')}]`,
-  })
-  status: PublicationStatusEnum;
+  @IsBoolean()
+  isDiscussionOpen: boolean;
 
   @IsOptional()
   @IsEnum(PublicationTagEnum, {

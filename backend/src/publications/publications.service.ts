@@ -1,11 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Publication } from './schemas/publication.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddPublicationsDto } from './dtos/add.publication.dto';
-import { PublicationStatusEnum } from './types/publication.status.enum';
 import { UpdatePublicationsDto } from './dtos/update.publication.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { Publication } from './schemas/publication.schema';
 
 @Injectable()
 export class PublicationsService {
@@ -15,23 +13,61 @@ export class PublicationsService {
   ) {}
 
   async getPublications(): Promise<Publication[]> {
-    const publications = await this.publicationModel.find();
+    const publications = await this.publicationModel.aggregate([
+      {
+        $lookup: {
+          // The name of the users collection
+          from: 'users',
+          // The field in the publications collection
+          localField: 'userId',
+          // The field in the users collection
+          foreignField: '_id',
+          // The alias for the result array
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user', // Unwind the user array to merge it with the publication
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          content: 1,
+          commentsCount: 1,
+          isDiscussionOpen: 1,
+          tags: 1,
+          createdAt: 1,
+          userId: 1,
+          userName: '$user.name',
+        },
+      },
+    ]);
     return publications;
   }
 
-  async getUserPublications(user): Promise<Publication[]> {
-    const publications = await this.publicationModel.find({ userId: user.id });
+  async getUserPublications(payload): Promise<Publication[]> {
+    const userIdAsObjectId = Types.ObjectId.createFromHexString(
+      payload.user._id,
+    );
+    const publications = await this.publicationModel.find({
+      userId: userIdAsObjectId,
+    });
     return publications;
   }
 
   async addPublication(
     publication: AddPublicationsDto,
-    user,
+    payload,
   ): Promise<Publication> {
+    const userIdAsObjectId = Types.ObjectId.createFromHexString(
+      payload.user._id,
+    );
     let newPublication: Publication = {
       ...publication,
-      userId: user.id,
-      status: PublicationStatusEnum.OPEN,
+      userId: userIdAsObjectId,
+      isDiscussionOpen: true,
+      commentsCount: 0,
     };
     const createdPublication =
       await this.publicationModel.create(newPublication);
