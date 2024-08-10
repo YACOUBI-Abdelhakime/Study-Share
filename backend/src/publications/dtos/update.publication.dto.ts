@@ -8,7 +8,7 @@ import {
 import { Types } from 'mongoose';
 import { PublicationTagEnum } from '../types/publication.tag.enum';
 
-export class UpdatePublicationsDto {
+export class UpdatePublicationDto {
   @IsEmpty()
   userId: Types.ObjectId;
 

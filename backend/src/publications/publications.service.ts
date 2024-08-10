@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { AddPublicationsDto } from './dtos/add.publication.dto';
-import { UpdatePublicationsDto } from './dtos/update.publication.dto';
+import { AddPublicationDto as AddPublicationDto } from './dtos/add.publication.dto';
+import { UpdatePublicationDto } from './dtos/update.publication.dto';
 import { Publication } from './schemas/publication.schema';
 
 @Injectable()
@@ -57,7 +57,7 @@ export class PublicationsService {
   }
 
   async addPublication(
-    publication: AddPublicationsDto,
+    publication: AddPublicationDto,
     payload,
   ): Promise<Publication> {
     const userIdAsObjectId = Types.ObjectId.createFromHexString(
@@ -81,7 +81,7 @@ export class PublicationsService {
 
   async updatePublication(
     id: string,
-    publication: UpdatePublicationsDto,
+    publication: UpdatePublicationDto,
   ): Promise<Publication> {
     const updatedPublication = await this.publicationModel.findByIdAndUpdate(
       id,

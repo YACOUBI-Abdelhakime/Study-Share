@@ -10,11 +10,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { AddPublicationsDto } from './dtos/add.publication.dto';
+import { AddPublicationDto } from './dtos/add.publication.dto';
 import { Publication } from './schemas/publication.schema';
 import { PublicationsService } from './publications.service';
 import { Request } from 'express';
-import { UpdatePublicationsDto } from './dtos/update.publication.dto';
+import { UpdatePublicationDto } from './dtos/update.publication.dto';
 import { User } from 'src/users/schemas/user.schema';
 
 @Controller('publications')
@@ -37,7 +37,7 @@ export class PublicationsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async addPublication(
-    @Body() publication: AddPublicationsDto,
+    @Body() publication: AddPublicationDto,
     @Req() req: Request,
   ): Promise<Publication> {
     return await this.publicationService.addPublication(publication, req.user);
@@ -48,7 +48,7 @@ export class PublicationsController {
   @UseGuards(JwtAuthGuard)
   async updatePublication(
     @Param('id') publicationId: string,
-    @Body() publication: UpdatePublicationsDto,
+    @Body() publication: UpdatePublicationDto,
   ): Promise<Publication> {
     return await this.publicationService.updatePublication(
       publicationId,
