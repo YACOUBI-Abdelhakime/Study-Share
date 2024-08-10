@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { openCommentsPanel } from "../../../../features/comment/commentSlice";
 import { getPublications } from "../../../../features/publication/asyncThuks";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { AppDispatch } from "../../../../store";
@@ -14,6 +15,7 @@ export default function Publications() {
 
   useEffect(() => {
     dispatch(getPublications());
+    dispatch(openCommentsPanel(""));
   }, []);
 
   return (

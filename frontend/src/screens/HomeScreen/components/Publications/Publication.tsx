@@ -6,6 +6,7 @@ import { getComments } from "../../../../features/comment/asyncThuks";
 import { openCommentsPanel } from "../../../../features/comment/commentSlice";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { AppDispatch } from "../../../../store";
+import { getDateString } from "../../../../utils/dateFormate.ts/dateFormat";
 import Comments from "./Comments";
 
 export default function PublicationComponent({
@@ -15,13 +16,6 @@ export default function PublicationComponent({
 }) {
   const dispatch: AppDispatch = useDispatch();
   const { t } = useTranslation();
-  let createdAt: Date = new Date(publication.createdAt);
-  let publicationDate: string =
-    createdAt.getFullYear() +
-    "/" +
-    (createdAt.getMonth() + 1) +
-    "/" +
-    createdAt.getDate();
 
   const openCommentsPanelPublicationId: string = useSelector((state: any) => {
     return state.commentReducer.openCommentsPanelPublicationId;
@@ -56,7 +50,7 @@ export default function PublicationComponent({
                   {publication.userName}
                 </p>
                 <p className="my-0 text-start" style={{ fontSize: "11px" }}>
-                  {publicationDate}
+                  {getDateString(publication.createdAt)}
                 </p>
               </div>
             </div>

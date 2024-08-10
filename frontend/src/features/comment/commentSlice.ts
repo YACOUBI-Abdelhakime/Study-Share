@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getComments } from "./asyncThuks";
+import { addComment, getComments } from "./asyncThuks";
 import { CommentState } from "./types/CommentState";
 
 const initialState: CommentState = {
@@ -28,6 +28,17 @@ const commentSlice = createSlice({
         state.comments[publicationId] = comments;
       })
       .addCase(getComments.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      // Get comments
+      .addCase(addComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addComment.fulfilled, (state: CommentState) => {
+        state.isLoading = false;
+      })
+      .addCase(addComment.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
       });
