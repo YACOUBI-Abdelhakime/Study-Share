@@ -31,7 +31,7 @@
   background: linear-gradient(to right, #f8f9fa, #dcdcdd);
 }
 
-.main-screen-container {
+.body-height-100 {
   height: calc(100vh - 55px);
 }
 
@@ -42,6 +42,5 @@
 
 /* For Firefox */
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
   scrollbar-width: none; /* Firefox */
 }

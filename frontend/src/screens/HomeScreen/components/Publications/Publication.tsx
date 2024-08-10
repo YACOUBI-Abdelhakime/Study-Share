@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { faCircleUser, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import Comments from "./Comments";
 
 export default function PublicationComponent({
   publication,
@@ -11,11 +12,11 @@ export default function PublicationComponent({
   const { t } = useTranslation();
   let createdAt: Date = new Date(publication.createdAt);
   let publicationDate: string =
-    createdAt.getDate() +
+    createdAt.getFullYear() +
     "/" +
     (createdAt.getMonth() + 1) +
     "/" +
-    createdAt.getFullYear();
+    createdAt.getDate();
 
   return (
     <div className="py-2 px-3 px-sm-5">
@@ -50,13 +51,14 @@ export default function PublicationComponent({
         <div className="card-body">
           <h5 className="card-title">{publication.title}</h5>
           <p className="card-text">{publication.content}</p>
+          <p className="card-text">Tags : {publication.tags.join(", ")}</p>
         </div>
         <div className="card-footer text-muted">
           <div className="d-flex align-items-center justify-content-between">
             <div
               role="button"
               onClick={() => {
-                // open comment panel
+                // open comment panel and fetch comments
               }}
             >
               <FontAwesomeIcon
@@ -74,7 +76,7 @@ export default function PublicationComponent({
                   className="my-0"
                   role="button"
                   onClick={() => {
-                    // open comment panel
+                    // open comment panel and fetch comments
                   }}
                 >
                   {t("commentate")}
@@ -83,6 +85,7 @@ export default function PublicationComponent({
             )}
           </div>
         </div>
+        <Comments publication={publication} />
       </div>
     </div>
   );

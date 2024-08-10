@@ -1,6 +1,22 @@
-import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Publication } from "../../../features/publication/types/Publication";
+import PublicationComponent from "./Publications/Publication";
 
 export default function RightPanel() {
-  const { t } = useTranslation();
-  return <div className="h-100 gradient-primary"></div>;
+  let publications: Publication[] = [];
+  publications = useSelector((state: any) => {
+    return state.publicationReducer.publications;
+  });
+  return (
+    <div className="h-100 bg-light border-start">
+      <div className="h-100 overflow-auto hide-scrollbar">
+        {publications.map((publication) => (
+          <PublicationComponent
+            publication={publication}
+            key={publication._id}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
