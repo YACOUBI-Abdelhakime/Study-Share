@@ -1,7 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Publication } from "../../../../features/publication/types/Publication";
 import { faCircleUser, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { getComments } from "../../../../features/comment/asyncThuks";
+import { openCommentsPanel } from "../../../../features/comment/commentSlice";
+import { Publication } from "../../../../features/publication/types/Publication";
+import { AppDispatch } from "../../../../store";
 import Comments from "./Comments";
 
 export default function PublicationComponent({
@@ -9,6 +13,7 @@ export default function PublicationComponent({
 }: {
   publication: Publication;
 }) {
+  const dispatch: AppDispatch = useDispatch();
   const { t } = useTranslation();
   let createdAt: Date = new Date(publication.createdAt);
   let publicationDate: string =
@@ -17,6 +22,20 @@ export default function PublicationComponent({
     (createdAt.getMonth() + 1) +
     "/" +
     createdAt.getDate();
+
+  const openCommentsPanelPublicationId: string = useSelector((state: any) => {
+    return state.commentReducer.openCommentsPanelPublicationId;
+  });
+
+  const showCommentsPanel: boolean =
+    openCommentsPanelPublicationId == publication._id;
+
+  let onClickOpenCommentsPanel = (publicationId: string) => {
+    // Dispatch the action to fetch comments of this publication
+    dispatch(getComments(publicationId));
+    // Dispatch the action to open the comments panel of this publication
+    dispatch(openCommentsPanel(publicationId));
+  };
 
   return (
     <div className="py-2 px-3 px-sm-5">
@@ -59,6 +78,7 @@ export default function PublicationComponent({
               role="button"
               onClick={() => {
                 // open comment panel and fetch comments
+                onClickOpenCommentsPanel(publication._id);
               }}
             >
               <FontAwesomeIcon
@@ -77,6 +97,7 @@ export default function PublicationComponent({
                   role="button"
                   onClick={() => {
                     // open comment panel and fetch comments
+                    onClickOpenCommentsPanel(publication._id);
                   }}
                 >
                   {t("commentate")}
@@ -85,7 +106,8 @@ export default function PublicationComponent({
             )}
           </div>
         </div>
-        <Comments publication={publication} />
+        {/* Show comments if publication id is the same as openCommentsPanelPublicationId in the state */}
+        {showCommentsPanel && <Comments publication={publication} />}
       </div>
     </div>
   );

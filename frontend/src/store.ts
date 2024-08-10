@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userSlice from "./features/user/userSlice.js";
 import publicationSlice from "./features/publication/publicationSlice.js";
+import commentSlice from "./features/comment/commentSlice.js";
 
 // Redux-persist configuration for user reducer
 const persistConfigUserReducer = {
@@ -16,12 +17,19 @@ const persistConfigPublicationReducer = {
   storage,
 };
 
+// Redux-persist configuration for comment reducer
+const persistConfigCommentReducer = {
+  key: "commentReducer",
+  storage,
+};
+
 const rootReducer = {
   userReducer: persistReducer(persistConfigUserReducer, userSlice),
   publicationReducer: persistReducer(
     persistConfigPublicationReducer,
     publicationSlice
   ),
+  commentReducer: persistReducer(persistConfigCommentReducer, commentSlice),
 };
 
 const store = configureStore({
