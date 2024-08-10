@@ -10,23 +10,23 @@
 
 ## Fonctionalités de l'MVP 💪💪
 
-    - Authentification avec email/mot de passe
+    - [x] Authentification avec email/mot de passe
 
-    - Création de compte et validation d'email
+    - [ ] Création de compte et validation d'email
 
-    - Publier des post pour demander de l'aide sur une matière ou un sujet
+    - [ ] Publier des post pour demander de l'aide sur une matière ou un sujet
 
-    - Ajouter des commentaires aux posts
+    - [x] Ajouter des commentaires aux posts
 
-    - Marquer un post comme résolu et arrêter d'accepter les commentaires
+    - [ ] Marquer un post comme résolu et arrêter d'accepter les commentaires
 
-    - Fonction de recherche avancée, filtres par matière/sujet
+    - [ ] Fonction de recherche avancée, filtres par matière/sujet
 
-    - Chat privé en temps réel
+    - [ ] Chat privé en temps réel
 
-    - Envoyer des notifications lorsqu'ils reçoivent des réponses à leurs posts ou messages privés
+    - [ ] Envoyer des notifications lorsqu'ils reçoivent des réponses à leurs posts ou messages privés
 
-    - Partage de fichiers (pdf, img) sur les posts et chat privé ( `ce n'est pas une priorité` )
+    - [ ] Partage de fichiers (pdf, img) sur les posts et chat privé ( `ce n'est pas une priorité` )
 
 ## Structure de la base de données 💾 🗂️
 

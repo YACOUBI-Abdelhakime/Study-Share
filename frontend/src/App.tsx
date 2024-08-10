@@ -43,9 +43,9 @@ function App() {
           <Route
             path="/home"
             element={
-              // <ProtectRoute isSignedIn={isSignedIn}>
-              <HomeScreen />
-              // </ProtectRoute>
+              <ProtectRoute isSignedIn={isSignedIn}>
+                <HomeScreen />
+              </ProtectRoute>
             }
           ></Route>
           <Route
