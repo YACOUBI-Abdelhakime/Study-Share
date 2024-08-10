@@ -42,6 +42,11 @@ export class PublicationsService {
           userName: '$user.name',
         },
       },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
     ]);
     return publications;
   }

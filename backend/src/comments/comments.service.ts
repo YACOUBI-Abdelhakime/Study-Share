@@ -48,6 +48,11 @@ export class CommentsService {
           userName: '$user.name',
         },
       },
+      {
+        $sort: {
+          createdAt: 1,
+        },
+      },
     ]);
     return comments;
   }
