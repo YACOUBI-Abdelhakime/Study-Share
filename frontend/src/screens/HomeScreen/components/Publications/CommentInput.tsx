@@ -8,6 +8,7 @@ import {
 import { AddCommentDto } from "../../../../features/comment/types/dtos/addCommentDto";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { AppDispatch } from "../../../../store";
+import { getPublications } from "../../../../features/publication/asyncThuks";
 
 export default function CommentInput({
   publication,
@@ -41,6 +42,7 @@ export default function CommentInput({
             commentsScrollbarRef.current.scrollHeight;
         }
       });
+      dispatch(getPublications());
     });
     if (commentRef.current) {
       commentRef.current.value = "";

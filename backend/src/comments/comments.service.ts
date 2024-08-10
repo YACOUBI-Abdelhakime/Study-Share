@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Comment } from './schemas/comment.schema';
 import { Model, Types } from 'mongoose';
 import { AddCommentDto } from './dtos/add.comment.dto';
+import { Publication } from 'src/publications/schemas/publication.schema';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectModel(Comment.name)
     private commentModel: Model<Comment>,
+    @InjectModel(Publication.name)
+    private publicationModel: Model<Publication>,
   ) {}
 
   async getPublicationComments(publicationId: string): Promise<Comment[]> {
@@ -62,6 +65,15 @@ export class CommentsService {
       publicationId: publicationIdAsObjectId,
     };
     const createdComment = await this.commentModel.create(newComment);
+    let result = await this.publicationModel.updateOne(
+      { _id: publicationIdAsObjectId },
+      { $inc: { commentsCount: 1 } },
+    );
+    const publication = await this.publicationModel.findById(
+      publicationIdAsObjectId,
+    );
+    console.log(publication);
+    console.log(result);
     return createdComment;
   }
 }

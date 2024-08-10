@@ -15,9 +15,10 @@ export default function Comments({
   const commentsScrollbarRef = useRef<HTMLDivElement>(null);
   let comments: Comment[] = [];
   let isLoading: boolean = true;
-  comments = useSelector((state: any) => {
-    return state.commentReducer.comments[publication._id];
-  });
+  comments =
+    useSelector((state: any) => {
+      return state.commentReducer.comments[publication._id];
+    }) || [];
   isLoading = useSelector((state: any) => {
     return state.commentReducer.isLoading;
   });
