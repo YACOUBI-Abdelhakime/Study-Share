@@ -1,11 +1,12 @@
-import LoginScreen from "./screens/LoginScreen/LoginScreen";
-import Navbar from "./components/Navbar/Navbar";
-import "./App.css";
-import SignupScreen from "./screens/SignupScreen/SignupScreen";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 import { useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar/Navbar";
+import AddPublication from "./screens/AddPublication/AddPublicationScreen";
 import HomeScreen from "./screens/HomeScreen/HomeScreen";
+import LoginScreen from "./screens/LoginScreen/LoginScreen";
+import SignupScreen from "./screens/SignupScreen/SignupScreen";
+import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 
 function App() {
   const isSignedIn = useSelector(
@@ -69,6 +70,14 @@ function App() {
             element={
               <ProtectRoute isSignedIn={isSignedIn}>
                 <div>Notifications</div>
+              </ProtectRoute>
+            }
+          ></Route>
+          <Route
+            path="/add-publication"
+            element={
+              <ProtectRoute isSignedIn={isSignedIn}>
+                <AddPublication />
               </ProtectRoute>
             }
           ></Route>
