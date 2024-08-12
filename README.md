@@ -14,11 +14,11 @@
 
     - [ ] Création de compte et validation d'email
 
-    - [ ] Publier des post pour demander de l'aide sur une matière ou un sujet
+    - [x] Publier des post pour demander de l'aide sur une matière ou un sujet
 
     - [x] Ajouter des commentaires aux posts
 
-    - [ ] Marquer un post comme résolu et arrêter d'accepter les commentaires
+    - [x] Marquer un post comme résolu et arrêter d'accepter les commentaires
 
     - [ ] Fonction de recherche avancée, filtres par matière/sujet
 
