@@ -10,7 +10,7 @@ import { getComments } from "../../../../features/comment/asyncThuks";
 import { openCommentsPanel } from "../../../../features/comment/commentSlice";
 import { Publication } from "../../../../features/publication/types/Publication";
 import { AppDispatch } from "../../../../store";
-import { getDateString } from "../../../../utils/dateFormate.ts/dateFormat";
+import { getDateString } from "../../../../utils/dateFormate/dateFormat";
 import Comments from "./Comments";
 import {
   deletePublication,

@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
@@ -6,12 +5,11 @@ import AddPublication from "./screens/AddPublication/AddPublicationScreen";
 import HomeScreen from "./screens/HomeScreen/HomeScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import SignupScreen from "./screens/SignupScreen/SignupScreen";
+import useAuth from "./utils/customHooks/useAuth";
 import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 
 function App() {
-  const isSignedIn = useSelector(
-    (state: any) => state.userReducer.user != null
-  );
+  const isSignedIn = useAuth();
   return (
     <BrowserRouter>
       <Navbar />
