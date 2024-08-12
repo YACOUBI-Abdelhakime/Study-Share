@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./Navbar.css";
+import "./navbar.css";
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -18,12 +18,15 @@ export default function Navbar() {
     window.location.reload();
   };
   return (
-    <nav className="navbar navbar-expand-md navbar-light gradient-light-vertical p-0 fixed-top">
+    <nav
+      className="navbar navbar-expand-md navbar-light gradient-light-vertical p-0 fixed-top"
+      style={{ height: "55px" }}
+    >
       <div className="container-fluid px-5 pb-0">
         <div>
           <Link to="/">
             <img
-              src="./src/assets/logo-1x2.svg"
+              src="assets/logo-1x2.svg"
               alt="Study Share Logo"
               className="navbar-logo"
             />

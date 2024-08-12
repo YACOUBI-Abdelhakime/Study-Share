@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/navbar/navbar";
 import AddPublication from "./screens/AddPublication/AddPublicationScreen";
 import HomeScreen from "./screens/HomeScreen/HomeScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
