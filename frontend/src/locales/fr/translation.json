@@ -22,6 +22,8 @@
   "comment": "Commentaire",
   "addPublication": "Ajouter une publication",
   "newPublication": "Nouvelle publication",
+  "publicationAdded": "Publication ajoutée !",
+  "publicationPosted": "Votre nouvelle publication a été postée avec succès.",
   "title": "Titre",
   "content": "Contenu",
   "tags": "Mots clés",

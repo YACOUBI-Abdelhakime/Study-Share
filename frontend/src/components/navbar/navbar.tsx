@@ -1,4 +1,8 @@
-import { faBars, faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faCircleUser,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -64,17 +68,15 @@ export default function Navbar() {
               <div className="float-end pb-md-0 pb-2">
                 <button
                   className="btn btn-outline-primary mx-2"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title={t("logout")}
                   onClick={onLogoutClicked}
                 >
-                  {t("logout")}
+                  <FontAwesomeIcon icon={faRightFromBracket} rotation={180} />
                 </button>
                 <Link className="btn btn-primary" to="/profile">
-                  <span className="mx-2 h6">{user.name}</span>
-                  <FontAwesomeIcon
-                    icon={faCircleUser}
-                    className="mx-2"
-                    size="xl"
-                  />
+                  <FontAwesomeIcon icon={faCircleUser} size="xl" />
                 </Link>
               </div>
             ) : (

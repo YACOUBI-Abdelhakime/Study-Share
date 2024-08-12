@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPublications } from "./asyncThuks";
+import { addPublication, getPublications } from "./asyncThuks";
 import { PublicationState } from "./types/PublicationState";
 
 const initialState: PublicationState = {
@@ -10,14 +10,7 @@ const initialState: PublicationState = {
 const publicationSlice = createSlice({
   name: "publicationReducer",
   initialState,
-  reducers: {
-    // fnOne: (state, action) => {
-    //   state.products = [...];
-    // },
-    // fnTwo: (state, action) => {
-    //   state.product = [...];
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Get publications
@@ -29,6 +22,17 @@ const publicationSlice = createSlice({
         state.publications = action.payload;
       })
       .addCase(getPublications.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      // Add publications
+      .addCase(addPublication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addPublication.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(addPublication.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
       });

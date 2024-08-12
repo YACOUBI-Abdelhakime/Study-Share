@@ -2,6 +2,10 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AppDispatch } from "../../../store";
+import { useDispatch } from "react-redux";
+import { AddPublicationDto } from "../../../features/publication/types/dtos/AddPublicationDto";
+import { addPublication } from "../../../features/publication/asyncThuks";
 enum PublicationTagEnum {
   MATHEMATICS = "Mathématiques",
   HISTORY = "Histoire",
@@ -26,9 +30,9 @@ enum PublicationTagEnum {
 
 export default function AddPublicationBody() {
   const { t } = useTranslation();
-  // let tagValues: string[] = [];
-  // let selectedTagsList: string[] = [];
+  const dispatch: AppDispatch = useDispatch();
 
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
   const [tagValues, setTagValues] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -53,20 +57,44 @@ export default function AddPublicationBody() {
     setSelectedTags(selectedTags.filter((value) => value !== tag));
   };
 
+  const hideAlert = () => {
+    setShowSuccessAlert(false);
+  };
+
   const onSubmitAddPublication = (e: any) => {
     e.preventDefault();
     const form = e.target;
     const data = new FormData(form);
-    const title = data.get("title");
-    const content = data.get("content");
+    const title: string = (data.get("title") as string) ?? "";
+    const content: string = (data.get("content") as string) ?? "";
     const tags = selectedTags;
-
-    console.log(title, content, tags);
+    const newPublication: AddPublicationDto = { title, content, tags };
+    dispatch(addPublication(newPublication)).then(() => {
+      form.reset();
+      setSelectedTags([]);
+      setShowSuccessAlert(true);
+    });
   };
 
   return (
     <div className="h-100 bg-light">
-      <div className="h-100 overflow-auto hide-scrollbar py-2 px-3 px-sm-5">
+      <div className="h-100 overflow-auto hide-scrollbar py-2 px-3 px-sm-5  position-relative">
+        {showSuccessAlert && (
+          <div
+            className="alert alert-success alert-dismissible fade show rounded-0 position-absolute top-0 start-0 w-100"
+            role="alert"
+            style={{ zIndex: 10 }}
+          >
+            <strong>{t("publicationAdded")}</strong> {t("publicationPosted")}
+            <button
+              className="btn btn-close me-3"
+              data-dismiss="alert"
+              aria-label="Close"
+              aria-hidden="true"
+              onClick={hideAlert}
+            ></button>
+          </div>
+        )}
         <div className="row">
           <div className="card mt-3 col-12">
             <div className="card-body">
