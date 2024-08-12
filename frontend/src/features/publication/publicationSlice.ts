@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addPublication,
+  deletePublication,
   getPublications,
   getPublicationTagValues,
   togglePublicationDiscussion,
@@ -60,7 +61,7 @@ const publicationSlice = createSlice({
         console.log(action.payload);
         state.isLoading = false;
       })
-      // Add publications
+      // Add publication
       .addCase(addPublication.pending, (state) => {
         state.isLoading = true;
       })
@@ -68,6 +69,20 @@ const publicationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(addPublication.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      // Delete publication
+      .addCase(deletePublication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePublication.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.publications = state.publications.filter(
+          (publication) => publication._id !== action.payload._id
+        );
+      })
+      .addCase(deletePublication.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
       });

@@ -87,3 +87,26 @@ export const addPublication = createAsyncThunk(
     }
   }
 );
+
+export const deletePublication = createAsyncThunk(
+  "publicationReducer/deletePublication",
+  async (publicationId: string, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const token = state.userReducer.user.token;
+    try {
+      const response = await axios.delete(
+        "http://localhost:3000/publications/" + publicationId,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);

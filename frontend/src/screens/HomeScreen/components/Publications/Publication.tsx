@@ -12,7 +12,10 @@ import { Publication } from "../../../../features/publication/types/Publication"
 import { AppDispatch } from "../../../../store";
 import { getDateString } from "../../../../utils/dateFormate.ts/dateFormat";
 import Comments from "./Comments";
-import { togglePublicationDiscussion } from "../../../../features/publication/asyncThuks";
+import {
+  deletePublication,
+  togglePublicationDiscussion,
+} from "../../../../features/publication/asyncThuks";
 
 export default function PublicationComponent({
   publication,
@@ -41,8 +44,12 @@ export default function PublicationComponent({
     dispatch(openCommentsPanel(publicationId));
   };
 
-  const toggleDiscussion = (publicationId: string) => {
+  const onToggleDiscussion = (publicationId: string) => {
     dispatch(togglePublicationDiscussion(publicationId));
+  };
+
+  const onDeletePublication = (publicationId: string) => {
+    dispatch(deletePublication(publicationId));
   };
 
   return (
@@ -82,17 +89,14 @@ export default function PublicationComponent({
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuLink"
                 >
-                  <li>
-                    <p
-                      className="dropdown-item my-0 py-1 cursor-pointer"
-                      onClick={() => toggleDiscussion(publication._id)}
-                    >
+                  <li onClick={() => onToggleDiscussion(publication._id)}>
+                    <p className="dropdown-item my-0 py-1 cursor-pointer">
                       {publication.isDiscussionOpen
                         ? t("closeDiscussion")
                         : t("openDiscussion")}
                     </p>
                   </li>
-                  <li>
+                  <li onClick={() => onDeletePublication(publication._id)}>
                     <p className="dropdown-item my-0 py-1 cursor-pointer">
                       {t("delete")}
                     </p>
