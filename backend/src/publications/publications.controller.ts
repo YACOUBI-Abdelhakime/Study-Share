@@ -16,6 +16,7 @@ import { PublicationsService } from './publications.service';
 import { Request } from 'express';
 import { UpdatePublicationDto } from './dtos/update.publication.dto';
 import { User } from 'src/users/schemas/user.schema';
+import { PublicationTagEnum } from './types/publication.tag.enum';
 
 @Controller('publications')
 export class PublicationsController {
@@ -31,6 +32,12 @@ export class PublicationsController {
   @UseGuards(JwtAuthGuard)
   async getUserPublications(@Req() req: Request): Promise<Publication[]> {
     return await this.publicationService.getUserPublications(req.user);
+  }
+
+  @Get('/tag-values')
+  @UseGuards(JwtAuthGuard)
+  async getTagValues(): Promise<PublicationTagEnum[]> {
+    return await this.publicationService.getTagValues();
   }
 
   // Add publication

@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { AddPublicationDto as AddPublicationDto } from './dtos/add.publication.dto';
 import { UpdatePublicationDto } from './dtos/update.publication.dto';
 import { Publication } from './schemas/publication.schema';
+import { PublicationTagEnum } from './types/publication.tag.enum';
 
 @Injectable()
 export class PublicationsService {
@@ -59,6 +60,10 @@ export class PublicationsService {
       userId: userIdAsObjectId,
     });
     return publications;
+  }
+
+  async getTagValues(): Promise<PublicationTagEnum[]> {
+    return Object.values(PublicationTagEnum);
   }
 
   async addPublication(

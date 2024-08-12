@@ -2,31 +2,10 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AppDispatch } from "../../../store";
-import { useDispatch } from "react-redux";
-import { AddPublicationDto } from "../../../features/publication/types/dtos/AddPublicationDto";
+import { useDispatch, useSelector } from "react-redux";
 import { addPublication } from "../../../features/publication/asyncThuks";
-enum PublicationTagEnum {
-  MATHEMATICS = "Mathématiques",
-  HISTORY = "Histoire",
-  GEOGRAPHY = "Géographie",
-  LIFE_AND_EARTH_SCIENCES = "SVT",
-  PHYSICS = "Physique",
-  CHEMISTRY = "Chimie",
-  SPORT = "Sport",
-  TECHNOLOGY = "Technologie",
-  ARTS = "Arts",
-  MUSIC = "Musique",
-  PHILOSOPHY = "Philosophie",
-  ECONOMICS = "Économie",
-  COMPUTER_SCIENCE = "Informatique",
-  ARABIC = "Arabe",
-  ENGLISH = "Anglais",
-  FRENCH = "Français",
-  SPANISH = "Espagnol",
-  GERMAN = "Allemand",
-  ITALIAN = "Italien",
-}
+import { AddPublicationDto } from "../../../features/publication/types/dtos/AddPublicationDto";
+import { AppDispatch } from "../../../store";
 
 export default function AddPublicationBody() {
   const { t } = useTranslation();
@@ -35,12 +14,21 @@ export default function AddPublicationBody() {
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
   const [tagValues, setTagValues] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // Get the tag values from Redux store
+  const tagValuesFromStore = useSelector(
+    (state: any) => state.publicationReducer.publicationTagValues
+  );
 
   useEffect(() => {
-    let list: string[] = Object.values(PublicationTagEnum);
-    list.sort((a, b) => a.localeCompare(b));
+    console.log("use effect re-render");
+    let list: string[] = [...tagValuesFromStore].sort((a, b) =>
+      a.localeCompare(b)
+    );
+    list = list.map(
+      (tag) => tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase()
+    );
     setTagValues(list);
-  }, []);
+  }, [tagValuesFromStore]);
 
   const selectTag = (tag: string) => {
     if (selectedTags.length >= 3) {
@@ -67,7 +55,7 @@ export default function AddPublicationBody() {
     const data = new FormData(form);
     const title: string = (data.get("title") as string) ?? "";
     const content: string = (data.get("content") as string) ?? "";
-    const tags = selectedTags;
+    const tags = selectedTags.map((tag) => tag.toUpperCase());
     const newPublication: AddPublicationDto = { title, content, tags };
     dispatch(addPublication(newPublication)).then(() => {
       form.reset();

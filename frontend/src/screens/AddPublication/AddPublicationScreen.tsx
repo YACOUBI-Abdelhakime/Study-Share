@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import RightPanel from "../HomeScreen/components/RightPanel";
 import AddPublicationBody from "./components/AddPublicationBody";
+import { AppDispatch } from "../../store";
+import { useDispatch } from "react-redux";
+import { getPublicationTagValues } from "../../features/publication/asyncThuks";
 
 export default function AddPublication() {
+  const dispatch: AppDispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPublicationTagValues());
+  }, []);
   return (
     <div className="container-fluid p-0 m-0 bg-danger">
       <div className="row m-0">
