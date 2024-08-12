@@ -43,6 +43,28 @@ export const getPublicationTagValues = createAsyncThunk(
   }
 );
 
+export const togglePublicationDiscussion = createAsyncThunk(
+  "publicationReducer/togglePublicationDiscussion",
+  async (publicationId: string, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const token = state.userReducer.user.token;
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/publications/toggle-discussion/" + publicationId,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+
 export const addPublication = createAsyncThunk(
   "publicationReducer/addPublication",
   async (publication: AddPublicationDto, thunkAPI) => {

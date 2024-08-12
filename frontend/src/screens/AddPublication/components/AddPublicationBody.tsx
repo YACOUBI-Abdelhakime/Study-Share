@@ -135,10 +135,7 @@ export default function AddPublicationBody() {
                       >
                         {tagValues.map((tag) => (
                           <li key={tag} onClick={() => selectTag(tag)}>
-                            <p
-                              className="dropdown-item my-0 py-1"
-                              style={{ cursor: "pointer" }}
-                            >
+                            <p className="dropdown-item my-0 py-1 cursor-pointer">
                               {tag}
                             </p>
                           </li>

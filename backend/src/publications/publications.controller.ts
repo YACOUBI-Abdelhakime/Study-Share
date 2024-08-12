@@ -28,6 +28,7 @@ export class PublicationsController {
     return await this.publicationService.getPublications();
   }
 
+  // Unused
   @Get('/user')
   @UseGuards(JwtAuthGuard)
   async getUserPublications(@Req() req: Request): Promise<Publication[]> {
@@ -50,6 +51,20 @@ export class PublicationsController {
     return await this.publicationService.addPublication(publication, req.user);
   }
 
+  // Toggle publication discussion open/close
+  @Get('/toggle-discussion/:id')
+  @UseGuards(JwtAuthGuard)
+  async togglePublicationDiscussion(
+    @Param('id') publicationId: string,
+    @Req() req: Request,
+  ): Promise<Publication> {
+    return await this.publicationService.togglePublicationDiscussion(
+      publicationId,
+      req.user,
+    );
+  }
+
+  // Unused
   // Update publication
   @Patch('/:id')
   @UseGuards(JwtAuthGuard)

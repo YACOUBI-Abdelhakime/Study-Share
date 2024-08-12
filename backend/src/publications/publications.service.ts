@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { AddPublicationDto as AddPublicationDto } from './dtos/add.publication.dto';
@@ -87,6 +87,29 @@ export class PublicationsService {
   async deletePublication(id: string): Promise<Publication> {
     const publication = await this.publicationModel.findByIdAndDelete(id);
     return publication;
+  }
+
+  async togglePublicationDiscussion(id: string, payload): Promise<Publication> {
+    const userId = payload.user._id;
+
+    // Fetch the publication to get its current state
+    const publication = await this.publicationModel.findById(id);
+
+    if (!publication || publication.userId.toString() != userId) {
+      throw new UnauthorizedException(
+        "Can't toggle discussion of another user's publication",
+      );
+    }
+
+    const updatedPublication = await this.publicationModel.findByIdAndUpdate(
+      id,
+      { isDiscussionOpen: !publication.isDiscussionOpen },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+    return updatedPublication;
   }
 
   async updatePublication(

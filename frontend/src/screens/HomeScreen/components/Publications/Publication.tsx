@@ -1,4 +1,8 @@
-import { faCircleUser, faMessage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleUser,
+  faEllipsisVertical,
+  faMessage,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +12,7 @@ import { Publication } from "../../../../features/publication/types/Publication"
 import { AppDispatch } from "../../../../store";
 import { getDateString } from "../../../../utils/dateFormate.ts/dateFormat";
 import Comments from "./Comments";
+import { togglePublicationDiscussion } from "../../../../features/publication/asyncThuks";
 
 export default function PublicationComponent({
   publication,
@@ -20,15 +25,24 @@ export default function PublicationComponent({
   const openCommentsPanelPublicationId: string = useSelector((state: any) => {
     return state.commentReducer.openCommentsPanelPublicationId;
   });
+  const userId: string = useSelector((state: any) => {
+    return state.userReducer.user._id;
+  });
+
+  const isMyPublication: boolean = userId == publication.userId;
 
   const showCommentsPanel: boolean =
     openCommentsPanelPublicationId == publication._id;
 
-  let onClickOpenCommentsPanel = (publicationId: string) => {
+  const onClickOpenCommentsPanel = (publicationId: string) => {
     // Dispatch the action to fetch comments of this publication
     dispatch(getComments(publicationId));
     // Dispatch the action to open the comments panel of this publication
     dispatch(openCommentsPanel(publicationId));
+  };
+
+  const toggleDiscussion = (publicationId: string) => {
+    dispatch(togglePublicationDiscussion(publicationId));
   };
 
   return (
@@ -54,10 +68,37 @@ export default function PublicationComponent({
                 </p>
               </div>
             </div>
-            {!publication.isDiscussionOpen && (
-              <div className="">
-                <span className="my-0">{t("discussionClosed")}</span>
-              </div>
+
+            {isMyPublication && (
+              <>
+                <span data-bs-toggle="dropdown">
+                  <FontAwesomeIcon
+                    icon={faEllipsisVertical}
+                    size="lg"
+                    className="mx-2 px-2 cursor-pointer"
+                  />
+                </span>
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuLink"
+                >
+                  <li>
+                    <p
+                      className="dropdown-item my-0 py-1 cursor-pointer"
+                      onClick={() => toggleDiscussion(publication._id)}
+                    >
+                      {publication.isDiscussionOpen
+                        ? t("closeDiscussion")
+                        : t("openDiscussion")}
+                    </p>
+                  </li>
+                  <li>
+                    <p className="dropdown-item my-0 py-1 cursor-pointer">
+                      {t("delete")}
+                    </p>
+                  </li>
+                </ul>
+              </>
             )}
           </div>
         </div>
@@ -84,10 +125,9 @@ export default function PublicationComponent({
                 {publication.commentsCount}
               </span>
             </div>
-            {publication.isDiscussionOpen && (
+            {publication.isDiscussionOpen ? (
               <div>
                 <span
-                  className="my-0"
                   role="button"
                   onClick={() => {
                     // open comment panel and fetch comments
@@ -96,6 +136,10 @@ export default function PublicationComponent({
                 >
                   {t("commentate")}
                 </span>
+              </div>
+            ) : (
+              <div>
+                <span>{t("discussionClosed")}</span>
               </div>
             )}
           </div>

@@ -3,6 +3,7 @@ import {
   addPublication,
   getPublications,
   getPublicationTagValues,
+  togglePublicationDiscussion,
 } from "./asyncThuks";
 import { PublicationState } from "./types/PublicationState";
 
@@ -39,6 +40,23 @@ const publicationSlice = createSlice({
         state.publicationTagValues = action.payload;
       })
       .addCase(getPublicationTagValues.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      // Toggle publication discussion open/close
+      .addCase(togglePublicationDiscussion.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(togglePublicationDiscussion.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.publications = state.publications.map((publication) => {
+          if (publication._id === action.payload._id) {
+            publication.isDiscussionOpen = action.payload.isDiscussionOpen;
+          }
+          return publication;
+        });
+      })
+      .addCase(togglePublicationDiscussion.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
       })
