@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Comment } from './schemas/comment.schema';
 import { Model, Types } from 'mongoose';
@@ -64,6 +64,16 @@ export class CommentsService {
     const publicationIdAsObjectId = Types.ObjectId.createFromHexString(
       comment.publicationId,
     );
+
+    const publication = await this.publicationModel.findById(
+      publicationIdAsObjectId,
+    );
+    if (!publication) {
+      throw new BadRequestException('Publication not found');
+    }
+    if (!publication.isDiscussionOpen) {
+      throw new BadRequestException('Discussion is closed');
+    }
     let newComment: Comment = {
       ...comment,
       userId: userIdAsObjectId,
@@ -74,11 +84,6 @@ export class CommentsService {
       { _id: publicationIdAsObjectId },
       { $inc: { commentsCount: 1 } },
     );
-    const publication = await this.publicationModel.findById(
-      publicationIdAsObjectId,
-    );
-    console.log(publication);
-    console.log(result);
     return createdComment;
   }
 }

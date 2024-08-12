@@ -43,10 +43,12 @@ export default function Comments({
           />
         )}
       </div>
-      <CommentInput
-        publication={publication}
-        commentsScrollbarRef={commentsScrollbarRef}
-      />
+      {publication.isDiscussionOpen && (
+        <CommentInput
+          publication={publication}
+          commentsScrollbarRef={commentsScrollbarRef}
+        />
+      )}
     </div>
   );
 }
