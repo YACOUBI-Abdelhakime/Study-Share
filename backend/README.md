@@ -36,6 +36,8 @@ $ npm install
 
 ```javascript
 DB_URI=''
+// App ip to enable CORS
+APP_IP=''
 JWT_SECRET=''
 // ['1h', '7h', '1d']
 JWT_EXPIRES_IN=''
