@@ -1,36 +1,28 @@
 import {
   IsBoolean,
-  IsEmpty,
   IsEnum,
   IsOptional,
-  IsString,
+  IsString
 } from 'class-validator';
-import { Types } from 'mongoose';
 import { PublicationTagEnum } from '../types/publication.tag.enum';
 
 export class UpdatePublicationDto {
-  @IsEmpty()
-  userId: Types.ObjectId;
+  @IsOptional()
+  @IsString()
+  readonly title: string;
 
   @IsOptional()
   @IsString()
-  title: string;
-
-  @IsOptional()
-  @IsString()
-  content: string;
-
-  @IsEmpty()
-  commentsCount: number;
+  readonly content: string;
 
   @IsOptional()
   @IsBoolean()
-  isDiscussionOpen: boolean;
+  readonly isDiscussionOpen: boolean;
 
   @IsOptional()
   @IsEnum(PublicationTagEnum, {
     each: true,
     message: `Tags must be one of the following values: [${Object.values(PublicationTagEnum).join(', ')}]`,
   })
-  tags: PublicationTagEnum[];
+  readonly tags: PublicationTagEnum[];
 }

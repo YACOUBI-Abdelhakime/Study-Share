@@ -3,15 +3,16 @@ import { Types } from 'mongoose';
 
 @Schema({
   timestamps: true,
+  versionKey: false,
 })
 export class Comment {
-  @Prop()
+  @Prop({ required: true })
   userId: Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   publicationId: Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 }
 

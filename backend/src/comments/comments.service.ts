@@ -58,6 +58,7 @@ export class CommentsService {
   }
 
   async addComment(comment: AddCommentDto, payload): Promise<Comment> {
+    // Get user id from jwt payload
     const userIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
     );

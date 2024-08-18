@@ -49,7 +49,6 @@ export class AuthService {
   async register(user: RegisterDto): Promise<{ token: string }> {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
-    user.isVerified = false;
     user.email = user.email.toLowerCase();
 
     let createdUser;

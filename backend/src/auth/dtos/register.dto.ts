@@ -10,11 +10,11 @@ import {
 export class RegisterDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  readonly name: string;
 
   @IsNotEmpty()
   @IsISO8601()
-  dateOfBirth: string;
+  readonly dateOfBirth: string;
 
   @IsNotEmpty()
   @IsEmail()

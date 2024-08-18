@@ -4,24 +4,25 @@ import { PublicationTagEnum } from '../types/publication.tag.enum';
 
 @Schema({
   timestamps: true,
+  versionKey: false,
 })
 export class Publication {
-  @Prop()
+  @Prop({ required: true })
   userId: Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 
-  @Prop()
+  @Prop({ required: true, default: 0 })
   commentsCount: number;
 
-  @Prop()
+  @Prop({ required: true, default: true })
   isDiscussionOpen: boolean;
 
-  @Prop()
+  @Prop({ required: true, default: [] })
   tags: PublicationTagEnum[];
 }
 

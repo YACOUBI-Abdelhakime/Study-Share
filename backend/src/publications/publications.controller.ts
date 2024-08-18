@@ -9,13 +9,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { AddPublicationDto } from './dtos/add.publication.dto';
-import { Publication } from './schemas/publication.schema';
-import { PublicationsService } from './publications.service';
 import { Request } from 'express';
+import { JwtAuthGuard } from 'src/config/guards/jwt.auth.guard';
+import { AddPublicationDto } from './dtos/add.publication.dto';
 import { UpdatePublicationDto } from './dtos/update.publication.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { PublicationsService } from './publications.service';
+import { Publication } from './schemas/publication.schema';
 import { PublicationTagEnum } from './types/publication.tag.enum';
 
 @Controller('publications')

@@ -53,6 +53,7 @@ export class PublicationsService {
   }
 
   async getUserPublications(payload): Promise<Publication[]> {
+    // Get user id from jwt payload
     const userIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
     );
@@ -70,6 +71,7 @@ export class PublicationsService {
     publication: AddPublicationDto,
     payload,
   ): Promise<Publication> {
+    // Get user id from jwt payload
     const userIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
     );

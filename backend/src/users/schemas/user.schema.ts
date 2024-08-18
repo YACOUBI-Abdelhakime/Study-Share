@@ -3,22 +3,23 @@ import { IsEmail, MinLength } from 'class-validator';
 
 @Schema({
   timestamps: true,
+  versionKey: false,
 })
 export class User {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   dateOfBirth: string;
 
-  @Prop()
+  @Prop({ required: true, default: false })
   isVerified: boolean;
 
   @Prop({ unique: [true, 'Duplicate email entered'] })
   @IsEmail()
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   @MinLength(8)
   password: string;
 }

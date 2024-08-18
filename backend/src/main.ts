@@ -7,10 +7,9 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  const configService = app.get(ConfigService);
 
   // Enable CORS for my React app
-  const appIp: string = configService.get<string>('APP_IP');
+  const appIp: string = process.env.APP_IP;
   app.enableCors({
     origin: appIp == '*' ? true : appIp,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

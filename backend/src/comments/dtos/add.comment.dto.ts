@@ -1,15 +1,11 @@
-import { IsEmpty, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Types } from 'mongoose';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class AddCommentDto {
-  @IsEmpty()
-  userId: Types.ObjectId;
+  @IsNotEmpty()
+  @IsString()
+  readonly publicationId: string;
 
   @IsNotEmpty()
   @IsString()
-  publicationId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  content: string;
+  readonly content: string;
 }

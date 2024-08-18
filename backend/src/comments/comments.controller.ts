@@ -8,10 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Comment } from './schemas/comment.schema';
 import { AddCommentDto } from './dtos/add.comment.dto';
 import { Request } from 'express';
+import { JwtAuthGuard } from 'src/config/guards/jwt.auth.guard';
 
 @Controller('comments')
 export class CommentsController {
