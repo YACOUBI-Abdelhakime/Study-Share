@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { PublicationsModule } from './publications/publications.module';
 import { CommentsModule } from './comments/comments.module';
+import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { CommentsModule } from './comments/comments.module';
     MongooseModule.forRoot(process.env.DB_URI),
     PublicationsModule,
     CommentsModule,
+    ChatsModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
