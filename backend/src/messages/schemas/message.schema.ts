@@ -18,6 +18,11 @@ export class Message {
     required: true,
   })
   content: string;
+
+  @Prop({
+    default: false,
+  })
+  read: boolean;
 }
 
 export const messageSchema = SchemaFactory.createForClass(Message);

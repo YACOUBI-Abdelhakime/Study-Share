@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { Chat } from '../schemas/chat.schema';
+import { Message } from 'src/messages/schemas/message.schema';
 
 /**
  * Append messageId to chat messages and update lastMessageAt to messageCreatedAt
@@ -7,7 +8,7 @@ import { Chat } from '../schemas/chat.schema';
  * @param chatId: Types.ObjectId
  * @param messageId: Types.ObjectId
  * @param messageCreatedAt: Date
- * @returns void
+ * @returns Chat with unread messages
  */
 async function addMessageToChat(
   chatModel: Model<Chat>,
@@ -15,7 +16,7 @@ async function addMessageToChat(
   messageId: Types.ObjectId,
   messageCreatedAt: Date,
 ): Promise<Chat> {
-  let chat: Chat = await chatModel
+  const chat: Chat = await chatModel
     .findByIdAndUpdate(
       chatId,
       {
@@ -26,6 +27,12 @@ async function addMessageToChat(
     )
     .populate('messages')
     .populate('participants', '-password');
+
+  const unreadMessages: Message[] = chat.messages.filter((message: Message) => {
+    return message.read === false;
+  });
+
+  chat.messages = unreadMessages;
 
   return chat;
 }

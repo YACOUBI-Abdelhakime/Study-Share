@@ -20,33 +20,13 @@ export class MessagesService {
     }
   > {
     const senderIdAsObjectId = Types.ObjectId.createFromHexString(senderId);
-    const chatIdAsObjectId = Types.ObjectId.createFromHexString(
-      addMessageDto.chatId,
-    );
-
-    // // Check if the user is a participant of the chat
-    // const chat: Chat | null = await this.chatsService.checkChatParticipant(
-    //   chatIdAsObjectId,
-    //   senderIdAsObjectId,
-    // );
-
-    // if (!chat) {
-    //   // User is not a participant of the chat
-    //   throw new BadRequestException('Invalid chat or participant ID.');
-    // }
     // Create new message
     const newMessage: Message = {
       senderId: senderIdAsObjectId,
       content: addMessageDto.content,
+      read: false,
     };
     const createdMessage = await this.messageModel.create(newMessage);
-
-    // Update chat list messages and last message date
-    // await this.chatsService.addMessageToChat(
-    //   chatIdAsObjectId,
-    //   createdMessage._id,
-    //   createdMessage['createdAt'],
-    // );
 
     return createdMessage;
   }
