@@ -7,5 +7,9 @@ export class AddMessageDto {
 
   @IsNotEmpty()
   @IsString()
+  readonly receiverId: string;
+
+  @IsNotEmpty()
+  @IsString()
   readonly content: string;
 }

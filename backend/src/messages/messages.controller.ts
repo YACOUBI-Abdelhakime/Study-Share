@@ -9,12 +9,12 @@ import { Request } from 'express';
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Post('/')
-  @UseGuards(JwtAuthGuard)
-  async AddComment(
-    @Body() newChatDto: AddMessageDto,
-    @Req() req: Request,
-  ): Promise<Message> {
-    return await this.messagesService.addMessage(newChatDto, req.user);
-  }
+  // @Post('/')
+  // @UseGuards(JwtAuthGuard)
+  // async AddComment(
+  //   @Body() newChatDto: AddMessageDto,
+  //   @Req() req: Request,
+  // ): Promise<Message> {
+  //   return await this.messagesService.addMessage(newChatDto, req.user);
+  // }
 }

@@ -18,12 +18,12 @@ export class ChatsController {
   //   // return await this.chatsService.addChat(newChatDto, req.user);
   // }
 
-  @Post('/')
-  @UseGuards(JwtAuthGuard)
-  async AddChat(
-    @Body() newChatDto: AddChatDto,
-    @Req() req: Request,
-  ): Promise<Chat> {
-    return await this.chatsService.addChat(newChatDto, req.user);
-  }
+  // @Post('/')
+  // @UseGuards(JwtAuthGuard)
+  // async AddChat(
+  //   @Body() newChatDto: AddChatDto,
+  //   @Req() req: Request,
+  // ): Promise<Chat> {
+  //   return await this.chatsService.addChat(newChatDto, req.user);
+  // }
 }

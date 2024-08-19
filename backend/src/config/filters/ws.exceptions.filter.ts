@@ -1,21 +1,29 @@
 import {
-  Catch,
   ArgumentsHost,
-  WsExceptionFilter,
+  BadRequestException,
+  Catch,
+  HttpException,
   UnauthorizedException,
+  WsExceptionFilter,
 } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
+import { Socket } from 'Socket.io';
 
 @Catch(WsException, UnauthorizedException)
 export class WsExceptionsFilter implements WsExceptionFilter {
-  catch(exception: WsException | UnauthorizedException, host: ArgumentsHost) {
-    const client = host.switchToWs().getClient();
+  catch(exception: WsException | HttpException, host: ArgumentsHost) {
+    const client = host.switchToWs().getClient<Socket>();
 
-    if (exception instanceof UnauthorizedException) {
-      client.emit('error', { message: 'Unauthorized access token' });
-      client.disconnect();
-    } else {
-      client.emit('error', { message: exception.message });
+    switch (exception.constructor) {
+      case UnauthorizedException: {
+        client.emit('error', { message: 'Unauthorized access token' });
+        client.disconnect();
+        break;
+      }
+      case WsException: {
+        client.emit('error', { message: exception.message });
+        break;
+      }
     }
   }
 }

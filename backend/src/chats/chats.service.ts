@@ -1,14 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { AddChatDto } from './dtos/add.chat.dto';
 import { Chat } from './schemas/chat.schema';
+import { MessagesService } from 'src/messages/messages.service';
+import { Message } from 'src/messages/schemas/message.schema';
+import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
+import { checkChatParticipants } from './utils/check.chat.participants';
+import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectModel(Chat.name)
     private chatModel: Model<Chat>,
+    private readonly messagesService: MessagesService,
   ) {}
 
   async addChat(addChatDto: AddChatDto, payload): Promise<Chat> {
@@ -42,45 +49,41 @@ export class ChatsService {
     return chat;
   }
 
-  /**
-   *
-   * @param chatId: Types.ObjectId
-   * @param senderId: Types.ObjectId
-   * @returns Chat | null, if chat is found and senderId participate, return chat, otherwise return null
-   */
-  async checkChatParticipant(
-    chatId: Types.ObjectId,
-    senderId: Types.ObjectId,
-  ): Promise<Chat | null> {
-    const chat: Chat | null = await this.chatModel.findOne({
-      _id: chatId,
-      participants: senderId,
-    });
-    return chat;
-  }
-
-  /**
-   *
-   * @param chatId: Types.ObjectId
-   * @param messageId: Types.ObjectId
-   * @param messageCreatedAt: Date
-   * @returns void
-   */
-  async addMessageToChat(
-    chatId: Types.ObjectId,
-    messageId: Types.ObjectId,
-    messageCreatedAt: Date,
-  ): Promise<void> {
-    // Append messageId to chat messages and update lastMessageAt to messageCreatedAt
-    await this.chatModel.findByIdAndUpdate(
-      chatId,
-      {
-        $push: { messages: messageId },
-        $set: { lastMessageAt: messageCreatedAt },
-      },
-      { new: true },
+  async addChatMessage(
+    addMessageDto: AddMessageDto,
+    senderId: string,
+  ): Promise<Chat> {
+    const senderIdAsObjectId = Types.ObjectId.createFromHexString(senderId);
+    const receiverIdAsObjectId = Types.ObjectId.createFromHexString(
+      addMessageDto.receiverId,
+    );
+    const chatIdAsObjectId = Types.ObjectId.createFromHexString(
+      addMessageDto.chatId,
+    );
+    // Check if the users are participants of the chat
+    const chat: Chat | null = await checkChatParticipants(
+      this.chatModel,
+      chatIdAsObjectId,
+      senderIdAsObjectId,
+      receiverIdAsObjectId,
     );
 
-    return;
+    if (!chat) {
+      // User is not a participant of the chat
+      throw new WsException('Invalid chat or participant ID.');
+    }
+
+    let createdMessage = await this.messagesService.addMessage(
+      addMessageDto,
+      senderId,
+    );
+
+    const updatedChat: Chat = await addMessageIdToChat(
+      this.chatModel,
+      chatIdAsObjectId,
+      createdMessage._id,
+      createdMessage['createdAt'],
+    );
+    return updatedChat;
   }
 }
