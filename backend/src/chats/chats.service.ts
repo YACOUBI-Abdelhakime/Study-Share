@@ -1,14 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { WsException } from '@nestjs/websockets';
 import { Model, Types } from 'mongoose';
+import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
+import { MessagesService } from 'src/messages/messages.service';
 import { AddChatDto } from './dtos/add.chat.dto';
 import { Chat } from './schemas/chat.schema';
-import { MessagesService } from 'src/messages/messages.service';
-import { Message } from 'src/messages/schemas/message.schema';
-import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
-import { checkChatParticipants } from './utils/check.chat.participants';
 import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
-import { WsException } from '@nestjs/websockets';
+import { checkChatParticipants } from './utils/check.chat.participants';
 
 @Injectable()
 export class ChatsService {
@@ -18,7 +17,63 @@ export class ChatsService {
     private readonly messagesService: MessagesService,
   ) {}
 
-  async addChat(addChatDto: AddChatDto, payload): Promise<Chat> {
+  async getChats(payload): Promise<Chat[]> {
+    // Get user id from jwt payload
+    const senderIdAsObjectId = Types.ObjectId.createFromHexString(
+      payload.user._id,
+    );
+    let chats: Chat[] = [];
+    chats = await this.chatModel
+      .find({
+        participants: senderIdAsObjectId,
+      })
+      .populate({
+        path: 'messages',
+        options: { sort: { createdAt: -1 } },
+      })
+      .populate('participants', '-password');
+
+    chats.map((chat) => {
+      chat.messages = chat.messages.filter((message) => {
+        return message.read === false;
+      });
+    });
+
+    return chats;
+  }
+
+  async getChat(chatId: string, payload): Promise<Chat> {
+    // Get user id from jwt payload
+    const senderIdAsObjectId = Types.ObjectId.createFromHexString(
+      payload.user._id,
+    );
+
+    let chat = await this.chatModel
+      .findOne({
+        _id: chatId,
+        participants: senderIdAsObjectId,
+      })
+      .populate({
+        path: 'messages',
+        options: { sort: { createdAt: -1 } },
+      })
+      .populate('participants', '-password');
+
+    if (!chat) {
+      throw new BadRequestException('Invalid chat or participant ID.');
+    }
+
+    return chat;
+  }
+
+  /**
+   * Create chat if not exists, otherwise return the existing chat
+   *
+   * @param addChatDto
+   * @param payload
+   * @returns  Chat
+   */
+  async createChat(addChatDto: AddChatDto, payload): Promise<Chat> {
     // Get user id from jwt payload
     const senderIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
@@ -32,12 +87,13 @@ export class ChatsService {
       .findOne({
         participants: { $all: participants },
       })
-      .populate('messages')
+      .populate({
+        path: 'messages',
+        options: { sort: { createdAt: -1 } },
+      })
       .populate('participants', '-password');
 
-    if (chat) {
-      // Chat found
-    } else {
+    if (!chat) {
       // Chat not found, create new one
       const newChat: Chat = {
         participants: participants,
