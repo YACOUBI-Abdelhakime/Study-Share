@@ -1,5 +1,5 @@
-import Publications from "./components/Publications/Publications";
-import RightPanel from "./components/RightPanel";
+import Publications from "../../components/Publication/Publications";
+import RightPanel from "../../components/RightPanal/RightPanel";
 
 export default function HomeScreen() {
   return (

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { Publication } from "../../../../features/publication/types/Publication";
+import { Publication } from "../../features/publication/types/Publication";
 import CommentComponent from "./Comment";
 import CommentInput from "./CommentInput";
-import { Comment } from "../../../../features/comment/types/Comment";
+import { Comment } from "../../features/comment/types/Comment";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";

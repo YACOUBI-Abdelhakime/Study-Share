@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import RightPanel from "../HomeScreen/components/RightPanel";
+import RightPanel from "../../components/RightPanal/RightPanel";
 import AddPublicationBody from "./components/AddPublicationBody";
 import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";

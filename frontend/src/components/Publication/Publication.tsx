@@ -6,16 +6,16 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { getComments } from "../../../../features/comment/asyncThuks";
-import { openCommentsPanel } from "../../../../features/comment/commentSlice";
-import { Publication } from "../../../../features/publication/types/Publication";
-import { AppDispatch } from "../../../../store";
-import { getDateString } from "../../../../utils/dateFormate/dateFormat";
-import Comments from "./Comments";
+import { getComments } from "../../features/comment/asyncThuks";
+import { openCommentsPanel } from "../../features/comment/commentSlice";
+import { Publication } from "../../features/publication/types/Publication";
+import { AppDispatch } from "../../store";
+import { getDateString } from "../../utils/dateFormate/dateFormat";
 import {
   deletePublication,
   togglePublicationDiscussion,
-} from "../../../../features/publication/asyncThuks";
+} from "../../features/publication/asyncThuks";
+import Comments from "../Comment/Comments";
 
 export default function PublicationComponent({
   publication,

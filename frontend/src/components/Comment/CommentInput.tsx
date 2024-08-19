@@ -1,14 +1,11 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {
-  addComment,
-  getComments,
-} from "../../../../features/comment/asyncThuks";
-import { AddCommentDto } from "../../../../features/comment/types/dtos/addCommentDto";
-import { Publication } from "../../../../features/publication/types/Publication";
-import { AppDispatch } from "../../../../store";
-import { getPublications } from "../../../../features/publication/asyncThuks";
+import { addComment, getComments } from "../../features/comment/asyncThuks";
+import { AddCommentDto } from "../../features/comment/types/dtos/addCommentDto";
+import { Publication } from "../../features/publication/types/Publication";
+import { AppDispatch } from "../../store";
+import { getPublications } from "../../features/publication/asyncThuks";
 
 export default function CommentInput({
   publication,

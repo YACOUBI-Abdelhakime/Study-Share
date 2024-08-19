@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { Publication } from "../../../features/publication/types/Publication";
-import PublicationComponent from "./Publications/Publication";
+import { Publication } from "../../features/publication/types/Publication";
+import PublicationComponent from "../Publication/Publication";
 
 export default function RightPanel() {
   let publications: Publication[] = [];

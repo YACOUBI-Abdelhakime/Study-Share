@@ -1,8 +1,8 @@
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
-import { Comment } from "../../../../features/comment/types/Comment";
-import { getDateString } from "../../../../utils/dateFormate/dateFormat";
+import { Comment } from "../../features/comment/types/Comment";
+import { getDateString } from "../../utils/dateFormate/dateFormat";
 
 export default function CommentComponent({ comment }: { comment: Comment }) {
   let myUserId: string = useSelector((state: any) => {

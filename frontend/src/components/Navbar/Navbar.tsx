@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./navbar.css";
+import "./Navbar.css";
 
 export default function Navbar() {
   const { t } = useTranslation();
