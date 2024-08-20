@@ -70,7 +70,7 @@ export default function PublicationComponent({
                 <p className="my-0 text-start fw-bold">
                   {publication.userName}
                 </p>
-                <p className="my-0 text-start" style={{ fontSize: "11px" }}>
+                <p className="my-0 text-start font-size-11">
                   {getDateString(publication.createdAt)}
                 </p>
               </div>

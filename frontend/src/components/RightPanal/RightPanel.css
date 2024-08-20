@@ -1,0 +1,9 @@
+.panel-header-height-100 {
+  height: 40px;
+}
+
+.panel-body-height-100 {
+  /* window - navbar height - panel header height */
+  /* 100vh - 55px - 40px */
+  height: calc(100vh - 95px);
+}

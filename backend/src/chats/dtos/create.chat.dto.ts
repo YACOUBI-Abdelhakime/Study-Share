@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class AddChatDto {
+export class CreateChatDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly chatName: string;
   @IsNotEmpty()
   @IsString()
   readonly receiverId: string;

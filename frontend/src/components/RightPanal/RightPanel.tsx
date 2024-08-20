@@ -1,21 +1,18 @@
-import { useSelector } from "react-redux";
-import { Publication } from "../../features/publication/types/Publication";
-import PublicationComponent from "../Publication/Publication";
+import { useTranslation } from "react-i18next";
+import Chats from "../Chat/Chats";
+import "./RightPanel.css";
 
 export default function RightPanel() {
-  let publications: Publication[] = [];
-  publications = useSelector((state: any) => {
-    return state.publicationReducer.publications;
-  });
+  const { t } = useTranslation();
   return (
-    <div className="h-100 bg-light border-start">
-      <div className="h-100 overflow-auto hide-scrollbar">
-        {publications.map((publication) => (
-          <PublicationComponent
-            publication={publication}
-            key={publication._id}
-          />
-        ))}
+    <div className="h-100 border-start">
+      <div className="h-100 bg-light  ">
+        <div className="w-100 bg-light border-bottom panel-header-height-100">
+          <span className="h4 mx-2">{t("messages")}</span>
+        </div>
+        <div className="overflow-auto hide-scrollbar panel-body-height-100">
+          <Chats />
+        </div>
       </div>
     </div>
   );

@@ -4,10 +4,11 @@ import { WsException } from '@nestjs/websockets';
 import { Model, Types } from 'mongoose';
 import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
 import { MessagesService } from 'src/messages/messages.service';
-import { AddChatDto } from './dtos/add.chat.dto';
+import { CreateChatDto } from './dtos/create.chat.dto';
 import { Chat } from './schemas/chat.schema';
 import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
 import { checkChatParticipants } from './utils/check.chat.participants';
+import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class ChatsService {
@@ -69,17 +70,17 @@ export class ChatsService {
   /**
    * Create chat if not exists, otherwise return the existing chat
    *
-   * @param addChatDto
+   * @param createChatDto
    * @param payload
    * @returns  Chat
    */
-  async createChat(addChatDto: AddChatDto, payload): Promise<Chat> {
+  async createChat(createChatDto: CreateChatDto, payload): Promise<Chat> {
     // Get user id from jwt payload
     const senderIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
     );
     const receiverIdAsObjectId = Types.ObjectId.createFromHexString(
-      addChatDto.receiverId,
+      createChatDto.receiverId,
     );
 
     const participants = [senderIdAsObjectId, receiverIdAsObjectId];
@@ -96,9 +97,9 @@ export class ChatsService {
     if (!chat) {
       // Chat not found, create new one
       const newChat: Chat = {
+        chatName: createChatDto.chatName,
         participants: participants,
         messages: [],
-        lastMessageAt: new Date(),
       };
       chat = await this.chatModel.create(newChat);
     }
@@ -138,7 +139,6 @@ export class ChatsService {
       this.chatModel,
       chatIdAsObjectId,
       createdMessage._id,
-      createdMessage['createdAt'],
     );
     return updatedChat;
   }

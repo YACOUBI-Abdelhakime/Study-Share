@@ -43,8 +43,8 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
                 {comment.userName}
               </p>
               <p
-                className={isMyComment ? "my-0 text-end" : "my-0 text-start"}
-                style={{ fontSize: "11px" }}
+                className={isMyComment ? "my-0 font-size-11 text-end" : "my-0 font-size-11 text-start"}
+                
               >
                 {getDateString(comment.createdAt)}
               </p>

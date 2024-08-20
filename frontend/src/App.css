@@ -48,3 +48,11 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.bg-white {
+  background-color: #fff;
+}
+
+.font-size-11 {
+  font-size: 11px;
+}

@@ -10,7 +10,7 @@ import {
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/config/guards/jwt.auth.guard';
 import { ChatsService } from './chats.service';
-import { AddChatDto } from './dtos/add.chat.dto';
+import { CreateChatDto } from './dtos/create.chat.dto';
 import { Chat } from './schemas/chat.schema';
 
 @Controller('chats')
@@ -35,9 +35,9 @@ export class ChatsController {
   @Post('/')
   @UseGuards(JwtAuthGuard)
   async AddChat(
-    @Body() newChatDto: AddChatDto,
+    @Body() createChatDto: CreateChatDto,
     @Req() req: Request,
   ): Promise<Chat> {
-    return await this.chatsService.createChat(newChatDto, req.user);
+    return await this.chatsService.createChat(createChatDto, req.user);
   }
 }
