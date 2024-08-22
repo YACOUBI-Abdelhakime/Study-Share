@@ -25,7 +25,12 @@ import { Chat } from './schemas/chat.schema';
 
 @UseGuards(WsJwtAuthGuard)
 @UseFilters(new WsExceptionsFilter())
-@WebSocketGateway(3001, { origin: process.env.APP_IP, namespace: '/chats' })
+@WebSocketGateway(3001, {
+  origin: '*', // or specify your client's origin like 'http://localhost:3000'
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Authorization'],
+  namespace: '/chats',
+})
 export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly chatsService: ChatsService) {}
   // Store connected users: userId -> socketId
@@ -37,17 +42,20 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: Socket) {
     let payload;
     try {
-      payload = jwtVerify(client.handshake.headers.authorization.split(' ')[1]);
+      payload = jwtVerify(client.handshake.query.token as string);
+
+      this.connectedUsers.set(payload.user._id, client.id);
+      console.log('OK connection:', client.id);
     } catch (error) {
-      client.emit('error', { message: 'Unauthorized access token' });
+      console.log('Error in connection:', error.message);
+      client.emit('error', { message: error.message });
       client.disconnect();
     }
-    // Add user to the connected users list
-    this.connectedUsers.set(payload.user._id, client.id);
   }
 
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
+    this.connectedUsers.delete(client.id);
   }
 
   // @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))

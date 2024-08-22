@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddPublicationDto } from "./types/dtos/AddPublicationDto";
-import { SERVER_URI } from "../../server.uri";
+import { SERVER_URL } from "../../urls";
 
 export const getPublications = createAsyncThunk(
   "publicationReducer/getPublications",
@@ -9,7 +9,7 @@ export const getPublications = createAsyncThunk(
     const state: any = thunkAPI.getState();
     const token = state.userReducer.user.token;
     try {
-      const response = await axios.get(`${SERVER_URI}/publications`, {
+      const response = await axios.get(`${SERVER_URL}/publications`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export const getPublicationTagValues = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.get(
-        `${SERVER_URI}/publications/tag-values`,
+        `${SERVER_URL}/publications/tag-values`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const togglePublicationDiscussion = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.get(
-        `${SERVER_URI}/publications/toggle-discussion/${publicationId}`,
+        `${SERVER_URL}/publications/toggle-discussion/${publicationId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const addPublication = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.post(
-        `${SERVER_URI}/publications`,
+        `${SERVER_URL}/publications`,
         publication,
         {
           headers: {
@@ -96,7 +96,7 @@ export const deletePublication = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.delete(
-        `${SERVER_URI}/publications/${publicationId}`,
+        `${SERVER_URL}/publications/${publicationId}`,
 
         {
           headers: {

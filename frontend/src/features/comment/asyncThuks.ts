@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddCommentDto } from "./types/dtos/addCommentDto";
-import { SERVER_URI } from "../../server.uri";
+import { SERVER_URL } from "../../urls";
 
 export const getComments = createAsyncThunk(
   "commentReducer/getComments",
@@ -10,7 +10,7 @@ export const getComments = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.get(
-        `${SERVER_URI}/comments/publication/${publicationId}`,
+        `${SERVER_URL}/comments/publication/${publicationId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const addComment = createAsyncThunk(
     const state: any = thunkAPI.getState();
     const token = state.userReducer.user.token;
     try {
-      const response = await axios.post(`${SERVER_URI}/comments`, comment, {
+      const response = await axios.post(`${SERVER_URL}/comments`, comment, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

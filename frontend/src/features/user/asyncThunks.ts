@@ -4,10 +4,10 @@ import { User } from "./types/User";
 import { LoginDto } from "./types/dtos/LoginDto";
 import { jwtDecode } from "jwt-decode";
 import { SignupDto } from "./types/dtos/SignupDto";
-import { SERVER_URI } from "../../server.uri";
+import { SERVER_URL } from "../../urls";
 
 const api = axios.create({
-  baseURL: SERVER_URI,
+  baseURL: SERVER_URL,
   headers: { "Content-Type": "application/json" },
 });
 
