@@ -1,11 +1,16 @@
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Chat } from "../../features/chat/types/schemas/Chat";
 import { getDateString } from "../../utils/dateFormate/dateFormat";
+import { WebSocketContext } from "../../App";
+import { AppDispatch } from "../../store";
+import { sendMessage } from "../../features/chat/asyncThuks";
 
 export default function ChatComponent({ chat }: { chat: Chat }) {
+  const { socket } = useContext(WebSocketContext);
+  const dispatch: AppDispatch = useDispatch();
   const userId: string = useSelector((state: any) => {
     return state.userReducer.user._id;
   });
@@ -49,9 +54,27 @@ export default function ChatComponent({ chat }: { chat: Chat }) {
   };
   useEffect(() => {
     getLastMessage(chat, userId);
-  }, []);
+  }, [chat]);
+
+  const handleChatClick = () => {
+    const d = new Date();
+    dispatch(
+      sendMessage({
+        socket: socket,
+        sendMessageDto: {
+          chatId: "66c4f0418d7f75fca8886d5d",
+          receiverId: "66b643f595b9ef16f028f80c",
+          content: "date >> " + d,
+        },
+      })
+    );
+  };
   return (
-    <div className="m-1 bg-white px-3 py-2" role="button">
+    <div
+      className="m-1 bg-white px-3 py-2"
+      role="button"
+      onClick={handleChatClick}
+    >
       <div className="d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center justify-content-start">
           <FontAwesomeIcon

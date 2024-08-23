@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { connectSocket, getChats } from "./asyncThuks";
+import { connectSocket, getChats, sendMessage } from "./asyncThuks";
 import { ChatState } from "./types/state/ChatState";
-import { Socket } from "socket.io-client";
 
 const initialState: ChatState = {
   chats: [],
@@ -12,7 +11,16 @@ const initialState: ChatState = {
 const chatSlice = createSlice({
   name: "chatReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    onMessageAdded: (state, action) => {
+      state.chats = state.chats.map((chat) => {
+        if (chat._id === action.payload._id) {
+          return action.payload;
+        }
+        return chat;
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Get chats
@@ -31,18 +39,29 @@ const chatSlice = createSlice({
       .addCase(connectSocket.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(connectSocket.fulfilled, (state, action) => {
+      .addCase(connectSocket.fulfilled, (state) => {
         state.isLoading = false;
-        // state.socket = action.payload as Socket | null;
-        let x = action.payload as Socket | null;
-        console.log("<--/-->Socket id = ", x?.id);
       })
       .addCase(connectSocket.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      // Send message using socket.io
+      .addCase(sendMessage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendMessage.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
       });
   },
 });
+
+/// Export synchronous actions from productSlice.actions
+export const { onMessageAdded } = chatSlice.actions;
 
 /// Export comment slice reducer
 export default chatSlice.reducer;

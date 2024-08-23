@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
-import { WS } from "../../socket";
 import { SERVER_URL } from "../../urls";
+import { onMessageAdded } from "./chatSlice";
+import { SendMessageDto } from "./types/dtos/sendMessageDto";
 
 export const getChats = createAsyncThunk(
   "chatReducer/getChats",
@@ -25,29 +26,32 @@ export const getChats = createAsyncThunk(
 
 export const connectSocket = createAsyncThunk(
   "chatReducer/connectSocket",
-  async (_, thunkAPI): Promise<Socket | null> => {
+  async (
+    setSocket: (socket: Socket | null) => void,
+    thunkAPI
+  ): Promise<void> => {
     const state: any = thunkAPI.getState();
     const token = state.userReducer.user.token;
     let socket: Socket | null = null;
     try {
-      socket = io("http://localhost:3001/chats", {
-        query: {
+      socket = io("http://localhost:3001/", {
+        auth: {
           token: token,
         },
         transports: ["websocket"],
       });
 
       socket.on("connect", () => {
-        console.log("WebSocket connected:", socket?.id);
-        WS.setWSocket(socket);
+        console.log("WebSocket connected id:", socket?.id);
+        setSocket(socket);
       });
-      socket.on("message", (message) => {
-        console.log("Message = " + message);
+      socket.on("message", (chat) => {
+        thunkAPI.dispatch(onMessageAdded(chat));
       });
 
-      socket.on("disconnect", (reason) => {
-        console.log("WebSocket disconnected err = " + reason);
-        WS.setWSocket(null);
+      socket.on("disconnect", (r) => {
+        console.error("Socket was disconnect>> ", r);
+        setSocket(null);
       });
 
       socket.on("error", (error) => {
@@ -56,6 +60,27 @@ export const connectSocket = createAsyncThunk(
     } catch (error) {
       console.error("WebSocket setup failed:", error);
     }
-    return socket;
+  }
+);
+
+export const sendMessage = createAsyncThunk(
+  "chatReducer/sendMessage",
+  async ({
+    socket,
+    sendMessageDto,
+  }: {
+    socket: Socket;
+    sendMessageDto: SendMessageDto;
+  }) => {
+    console.log("sendMessage() id:", socket?.id);
+    if (!socket) {
+      console.error("Socket is not connected");
+      return;
+    }
+    try {
+      socket.emit("message", sendMessageDto);
+    } catch (error) {
+      console.error("WebSocket setup failed:", error);
+    }
   }
 );

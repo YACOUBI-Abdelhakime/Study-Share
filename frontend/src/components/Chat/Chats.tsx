@@ -7,6 +7,7 @@ import ChatComponent from "./Chat";
 
 export default function Chats() {
   const dispatch: AppDispatch = useDispatch();
+
   let chats: Chat[] = [];
   chats = useSelector((state: any) => {
     return state.chatReducer.chats;

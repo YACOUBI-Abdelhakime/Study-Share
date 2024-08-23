@@ -1,8 +1,7 @@
 import {
   UseFilters,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
+  UsePipes
 } from '@nestjs/common';
 import {
   OnGatewayConnection,
@@ -11,8 +10,6 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 import { Server, Socket } from 'socket.io';
 import { WsExceptionsFilter } from 'src/config/filters/ws.exceptions.filter';
 import { WsJwtAuthGuard } from 'src/config/guards/ws.jwt.auth.guard';
@@ -20,16 +17,12 @@ import { WsValidationPipe } from 'src/config/pipes/ws.validation.pipe';
 import { jwtVerify } from 'src/config/utils/jwt.verify';
 import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
 import { ChatsService } from './chats.service';
-import { Message } from 'src/messages/schemas/message.schema';
 import { Chat } from './schemas/chat.schema';
 
 @UseGuards(WsJwtAuthGuard)
 @UseFilters(new WsExceptionsFilter())
 @WebSocketGateway(3001, {
-  origin: '*', // or specify your client's origin like 'http://localhost:3000'
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Authorization'],
-  namespace: '/chats',
+  origin: '*',
 })
 export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly chatsService: ChatsService) {}
@@ -42,7 +35,7 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: Socket) {
     let payload;
     try {
-      payload = jwtVerify(client.handshake.query.token as string);
+      payload = jwtVerify(client.handshake.auth.token as string);
 
       this.connectedUsers.set(payload.user._id, client.id);
       console.log('OK connection:', client.id);
@@ -58,7 +51,6 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.connectedUsers.delete(client.id);
   }
 
-  // @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @UsePipes(new WsValidationPipe())
   @UseFilters(new WsExceptionsFilter())
   @SubscribeMessage('message')

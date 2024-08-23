@@ -1,4 +1,4 @@
-export interface AddMessageDto {
+export interface SendMessageDto {
   chatId: string;
   receiverId: string;
   content: string;
