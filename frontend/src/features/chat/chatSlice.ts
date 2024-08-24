@@ -4,7 +4,6 @@ import { ChatState } from "./types/state/ChatState";
 
 const initialState: ChatState = {
   chats: [],
-  socket: null,
   isLoading: false,
 };
 

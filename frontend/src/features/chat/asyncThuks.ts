@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
-import { SERVER_URL } from "../../urls";
+import { SERVER_URL } from "../../utils/constantes/urls";
 import { onMessageAdded } from "./chatSlice";
 import { SendMessageDto } from "./types/dtos/sendMessageDto";
 

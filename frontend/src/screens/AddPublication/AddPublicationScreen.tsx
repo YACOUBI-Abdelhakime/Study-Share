@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import RightPanel from "../../components/RightPanal/RightPanel";
 import AddPublicationBody from "./components/AddPublicationBody";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "../../features/store";
 import { useDispatch } from "react-redux";
 import { getPublicationTagValues } from "../../features/publication/asyncThuks";
 

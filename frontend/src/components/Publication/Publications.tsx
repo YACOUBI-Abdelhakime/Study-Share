@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PublicationComponent from "./Publication";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "../../features/store";
 import { Publication } from "../../features/publication/types/Publication";
 import { getPublications } from "../../features/publication/asyncThuks";
 import { openCommentsPanel } from "../../features/comment/commentSlice";

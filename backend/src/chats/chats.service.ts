@@ -19,10 +19,8 @@ export class ChatsService {
   ) {}
 
   async getChats(payload): Promise<Chat[]> {
-    // Get user id from jwt payload
-    const senderIdAsObjectId = Types.ObjectId.createFromHexString(
-      payload.user._id,
-    );
+    const userId = payload.user._id;
+    const senderIdAsObjectId = Types.ObjectId.createFromHexString(userId);
     let chats: Chat[] = [];
     chats = await this.chatModel
       .find({
@@ -35,6 +33,14 @@ export class ChatsService {
       .populate('participants', '-password');
 
     chats.map((chat) => {
+      // Set chat name to the other participant's name
+      chat.participants.map((participant) => {
+        if (participant._id !== userId) {
+          chat.chatName = participant.name;
+          return;
+        }
+      });
+      // Get only unread messages
       chat.messages = chat.messages.filter((message) => {
         return message.read === false;
       });
@@ -59,6 +65,14 @@ export class ChatsService {
         options: { sort: { createdAt: -1 } },
       })
       .populate('participants', '-password');
+
+    // Set chat name to the other participant's name
+    chat.participants.map((participant) => {
+      if (participant._id !== payload.user._id) {
+        chat.chatName = participant.name;
+        return;
+      }
+    });
 
     if (!chat) {
       throw new BadRequestException('Invalid chat or participant ID.');
@@ -103,6 +117,14 @@ export class ChatsService {
       };
       chat = await this.chatModel.create(newChat);
     }
+
+    // Set chat name to the other participant's name
+    chat.participants.map((participant) => {
+      if (participant._id !== payload.user._id) {
+        chat.chatName = participant.name;
+        return;
+      }
+    });
     return chat;
   }
 
@@ -140,6 +162,14 @@ export class ChatsService {
       chatIdAsObjectId,
       createdMessage._id,
     );
+
+    // Set chat name to the other participant's name
+    updatedChat.participants.map((participant) => {
+      if (participant._id !== senderId) {
+        updatedChat.chatName = participant.name;
+        return;
+      }
+    });
     return updatedChat;
   }
 }

@@ -9,7 +9,7 @@ import AddPublication from "./screens/AddPublication/AddPublicationScreen";
 import HomeScreen from "./screens/HomeScreen/HomeScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import SignupScreen from "./screens/SignupScreen/SignupScreen";
-import { AppDispatch } from "./store";
+import { AppDispatch } from "./features/store";
 import useAuth from "./utils/customHooks/useAuth";
 import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 

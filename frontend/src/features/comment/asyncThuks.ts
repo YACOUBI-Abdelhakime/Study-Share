@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddCommentDto } from "./types/dtos/addCommentDto";
-import { SERVER_URL } from "../../urls";
+import { SERVER_URL } from "../../utils/constantes/urls";
 
 export const getComments = createAsyncThunk(
   "commentReducer/getComments",

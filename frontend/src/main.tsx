@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./custom.bootstrap/main.scss";
 import { Provider } from "react-redux";
-import { persistor, store } from "./store.ts";
+import { persistor, store } from "./features/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

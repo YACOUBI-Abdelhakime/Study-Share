@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getComments } from "../../features/comment/asyncThuks";
 import { openCommentsPanel } from "../../features/comment/commentSlice";
 import { Publication } from "../../features/publication/types/Publication";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "../../features/store";
 import { getDateString } from "../../utils/dateFormate/dateFormat";
 import {
   deletePublication,

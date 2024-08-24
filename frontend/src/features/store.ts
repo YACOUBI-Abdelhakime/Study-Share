@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import userSlice from "./features/user/userSlice.js";
-import publicationSlice from "./features/publication/publicationSlice.js";
-import commentSlice from "./features/comment/commentSlice.js";
-import chatSlice from "./features/chat/chatSlice.js";
+import userSlice from "./user/userSlice.js";
+import publicationSlice from "./publication/publicationSlice.js";
+import commentSlice from "./comment/commentSlice.js";
+import chatSlice from "./chat/chatSlice.js";
 
 // Redux-persist configuration for user reducer
 const persistConfigUserReducer = {

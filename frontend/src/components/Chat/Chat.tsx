@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Chat } from "../../features/chat/types/schemas/Chat";
 import { getDateString } from "../../utils/dateFormate/dateFormat";
 import { WebSocketContext } from "../../App";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "../../features/store";
 import { sendMessage } from "../../features/chat/asyncThuks";
 
 export default function ChatComponent({ chat }: { chat: Chat }) {

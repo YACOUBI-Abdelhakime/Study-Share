@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addPublication } from "../../../features/publication/asyncThuks";
 import { AddPublicationDto } from "../../../features/publication/types/dtos/AddPublicationDto";
-import { AppDispatch } from "../../../store";
+import { AppDispatch } from "../../../features/store";
 
 export default function AddPublicationBody() {
   const { t } = useTranslation();

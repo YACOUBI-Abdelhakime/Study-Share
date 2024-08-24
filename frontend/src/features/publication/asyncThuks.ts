@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddPublicationDto } from "./types/dtos/AddPublicationDto";
-import { SERVER_URL } from "../../urls";
+import { SERVER_URL } from "../../utils/constantes/urls";
 
 export const getPublications = createAsyncThunk(
   "publicationReducer/getPublications",
