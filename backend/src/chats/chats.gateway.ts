@@ -89,8 +89,7 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (participant._id != senderId) {
         updatedChat.chatName = participant.name;
       }
-    });
-    console.log('chat name sen> ', updatedChat.chatName);
+    }); 
     this.server.to(senderSocketId).emit('message', updatedChat);
   }
 }

@@ -7,3 +7,11 @@
 .message-input-height {
   height: 45px;
 }
+
+.primary-message-color {
+  background-color: #79ebac;
+}
+
+.secondary-message-color {
+  background-color: #d0ffe5;
+}

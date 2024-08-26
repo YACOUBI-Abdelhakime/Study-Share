@@ -52,7 +52,7 @@ export default function MessageInput({
             placeholder={t("messagePlaceholder")}
             ref={messageInputRef}
           />
-          <button className="btn btn-primary">{t("send")}</button>
+          <button className="btn btn-primary text-white">{t("send")}</button>
         </div>
       </form>
     </div>
