@@ -14,6 +14,7 @@ import { jwtVerify } from 'src/config/utils/jwt.verify';
 import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
 import { ChatsService } from './chats.service';
 import { Chat } from './schemas/chat.schema';
+import { User } from 'src/users/schemas/user.schema';
 
 @UseGuards(WsJwtAuthGuard)
 @UseFilters(new WsExceptionsFilter())
@@ -59,10 +60,10 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // Find the receiver socket id from the connected users list
     const receiverSocketId = this.connectedUsers.get(addMessageDto.receiverId);
-    let addedMessage: Chat;
+    let updatedChat: Chat;
     try {
       // Add message to the database
-      addedMessage = await this.chatsService.addChatMessage(
+      updatedChat = await this.chatsService.addChatMessage(
         addMessageDto,
         senderId,
       );
@@ -72,12 +73,24 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
+    const participants = updatedChat.participants;
     // Emit the message to the receiver
     if (receiverSocketId) {
-      this.server.to(receiverSocketId).emit('message', addedMessage);
+      participants.forEach((participant) => {
+        if (participant._id != addMessageDto.receiverId) {
+          updatedChat.chatName = participant.name;
+        }
+      });
+      this.server.to(receiverSocketId).emit('message', updatedChat);
     }
 
     // Emit the message to the sender
-    this.server.to(senderSocketId).emit('message', addedMessage);
+    participants.forEach((participant) => {
+      if (participant._id != senderId) {
+        updatedChat.chatName = participant.name;
+      }
+    });
+    console.log('chat name sen> ', updatedChat.chatName);
+    this.server.to(senderSocketId).emit('message', updatedChat);
   }
 }

@@ -4,6 +4,7 @@ import { io, Socket } from "socket.io-client";
 import { SERVER_URL } from "../../utils/constantes/urls";
 import { onMessageAdded } from "./chatSlice";
 import { SendMessageDto } from "./types/dtos/sendMessageDto";
+import { CreateChatDto } from "./types/dtos/createChatDto";
 
 export const getChats = createAsyncThunk(
   "chatReducer/getChats",
@@ -12,6 +13,53 @@ export const getChats = createAsyncThunk(
     const token = state.userReducer.user.token;
     try {
       const response = await axios.get(`${SERVER_URL}/chats`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+
+export const getSelectedChat = createAsyncThunk(
+  "chatReducer/getSelectedChat",
+  async (_, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const token = state.userReducer.user.token;
+    const selectedChatId = state.chatReducer.selectedChatId;
+
+    if (!selectedChatId) {
+      return null;
+    }
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/chats/${selectedChatId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+
+export const createChat = createAsyncThunk(
+  "chatReducer/createChat",
+  async (createChatDto: CreateChatDto, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const token = state.userReducer.user.token;
+
+    try {
+      const response = await axios.post(`${SERVER_URL}/chats`, createChatDto, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

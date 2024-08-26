@@ -9,7 +9,7 @@ import { Message } from 'src/messages/schemas/message.schema';
 })
 export class Chat {
   @Prop()
-  chatName: string;
+  chatName: string | null;
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: User.name }])
   participants: User[] | Types.ObjectId[] = [];

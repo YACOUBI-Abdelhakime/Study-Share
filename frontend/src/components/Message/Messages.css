@@ -1,0 +1,9 @@
+.messages-body-height-100 {
+  /* window - navbar height - panel header height - message input height */
+  /* 100vh - 55px - 40px - 45px */
+  height: calc(100vh - 140px);
+}
+
+.message-input-height {
+  height: 45px;
+}

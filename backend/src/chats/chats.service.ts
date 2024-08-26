@@ -4,11 +4,11 @@ import { WsException } from '@nestjs/websockets';
 import { Model, Types } from 'mongoose';
 import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
 import { MessagesService } from 'src/messages/messages.service';
+import { Message } from 'src/messages/schemas/message.schema';
 import { CreateChatDto } from './dtos/create.chat.dto';
 import { Chat } from './schemas/chat.schema';
 import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
 import { checkChatParticipants } from './utils/check.chat.participants';
-import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class ChatsService {
@@ -26,6 +26,7 @@ export class ChatsService {
       .find({
         participants: senderIdAsObjectId,
       })
+      .sort({ updatedAt: -1 })
       .populate({
         path: 'messages',
         options: { sort: { createdAt: -1 } },
@@ -35,15 +36,26 @@ export class ChatsService {
     chats.map((chat) => {
       // Set chat name to the other participant's name
       chat.participants.map((participant) => {
-        if (participant._id !== userId) {
+        if (participant._id != userId) {
           chat.chatName = participant.name;
           return;
         }
       });
       // Get only unread messages
-      chat.messages = chat.messages.filter((message) => {
-        return message.read === false;
-      });
+      const lastMessage = chat.messages[0] ?? null;
+      const unReadMessage: Message[] = [];
+      unReadMessage.push(lastMessage);
+      for (let i = 1; i < chat.messages.length; i++) {
+        if (
+          chat.messages[i].read === false &&
+          chat.messages[i].senderId != userId
+        ) {
+          unReadMessage.push(chat.messages[i]);
+        } else {
+          break;
+        }
+      }
+      chat.messages = unReadMessage;
     });
 
     return chats;
@@ -111,11 +123,13 @@ export class ChatsService {
     if (!chat) {
       // Chat not found, create new one
       const newChat: Chat = {
-        chatName: createChatDto.chatName,
+        chatName: null,
         participants: participants,
         messages: [],
       };
-      chat = await this.chatModel.create(newChat);
+      chat = await (
+        await this.chatModel.create(newChat)
+      ).populate('participants', '-password');
     }
 
     // Set chat name to the other participant's name

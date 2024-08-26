@@ -1,15 +1,13 @@
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { onSelectedChat } from "../../features/chat/chatSlice";
 import { Chat } from "../../features/chat/types/schemas/Chat";
-import { getDateString } from "../../utils/dateFormate/dateFormat";
-import { WebSocketContext } from "../../App";
 import { AppDispatch } from "../../features/store";
-import { sendMessage } from "../../features/chat/asyncThuks";
+import { getDateString } from "../../utils/dateFormate/dateFormat";
 
 export default function ChatComponent({ chat }: { chat: Chat }) {
-  const { socket } = useContext(WebSocketContext);
   const dispatch: AppDispatch = useDispatch();
   const userId: string = useSelector((state: any) => {
     return state.userReducer.user._id;
@@ -20,7 +18,8 @@ export default function ChatComponent({ chat }: { chat: Chat }) {
     unreadMessages: 0,
   });
   const getLastMessage = (chat: Chat, userId: string) => {
-    const message = chat.messages[0];
+    const reversedMessages = [...chat.messages].reverse();
+    const message = reversedMessages[0];
     let messageContent: string;
     let wasRead: boolean = true;
     let messagesNotRead: number = 0;
@@ -36,7 +35,7 @@ export default function ChatComponent({ chat }: { chat: Chat }) {
           wasRead = false;
         }
         // Count messages not read
-        for (const message of chat.messages) {
+        for (const message of reversedMessages) {
           if (message.senderId !== userId && !message.read) {
             messagesNotRead++;
           } else {
@@ -56,24 +55,14 @@ export default function ChatComponent({ chat }: { chat: Chat }) {
     getLastMessage(chat, userId);
   }, [chat]);
 
-  const handleChatClick = () => {
-    const d = new Date();
-    dispatch(
-      sendMessage({
-        socket: socket,
-        sendMessageDto: {
-          chatId: "66c4f0418d7f75fca8886d5d",
-          receiverId: "66b643f595b9ef16f028f80c",
-          content: "date >> " + d,
-        },
-      })
-    );
+  const onChatClicked = () => {
+    dispatch(onSelectedChat(chat._id));
   };
   return (
     <div
       className="m-1 bg-white px-3 py-2"
       role="button"
-      onClick={handleChatClick}
+      onClick={onChatClicked}
     >
       <div className="d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center justify-content-start">

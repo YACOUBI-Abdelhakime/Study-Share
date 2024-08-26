@@ -24,15 +24,9 @@ async function addMessageToChat(
     )
     .populate({
       path: 'messages',
-      options: { sort: { createdAt: -1 } },
+      options: { sort: { createdAt: 1 } },
     })
     .populate('participants', '-password');
-
-  const unreadMessages: Message[] = chat.messages.filter((message: Message) => {
-    return message.read === false;
-  });
-
-  chat.messages = unreadMessages;
 
   return chat;
 }

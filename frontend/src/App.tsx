@@ -22,7 +22,6 @@ function App() {
 
   useEffect(() => {
     if (!isSignedIn) return;
-    console.log("App(" + isSignedIn + ") -> Connecting socket...");
     dispatch(connectSocket(setSocket));
   }, [isSignedIn]);
 

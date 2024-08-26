@@ -16,6 +16,8 @@ import {
   togglePublicationDiscussion,
 } from "../../features/publication/asyncThuks";
 import Comments from "../Comment/Comments";
+import { createChat } from "../../features/chat/asyncThuks";
+import { useNavigate } from "react-router-dom";
 
 export default function PublicationComponent({
   publication,
@@ -23,6 +25,7 @@ export default function PublicationComponent({
   publication: Publication;
 }) {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const openCommentsPanelPublicationId: string = useSelector((state: any) => {
@@ -52,6 +55,15 @@ export default function PublicationComponent({
     dispatch(deletePublication(publicationId));
   };
 
+  const onUserNameClicked = () => {
+    if (isMyPublication) {
+      // Go to profile page
+      navigate("/profile");
+    } else {
+      dispatch(createChat({ receiverId: publication.userId }));
+    }
+  };
+
   return (
     <div className="py-2 px-3 px-sm-5">
       <div className="card">
@@ -60,6 +72,7 @@ export default function PublicationComponent({
             <div
               className="d-flex align-items-center justify-content-start"
               role="button"
+              onClick={onUserNameClicked}
             >
               <FontAwesomeIcon
                 icon={faCircleUser}
