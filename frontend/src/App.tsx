@@ -4,12 +4,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
+import RightPanel from "./components/RightPanal/RightPanel";
 import { connectSocket } from "./features/chat/asyncThuks";
+import { AppDispatch } from "./features/store";
 import AddPublication from "./screens/AddPublication/AddPublicationScreen";
 import HomeScreen from "./screens/HomeScreen/HomeScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import SignupScreen from "./screens/SignupScreen/SignupScreen";
-import { AppDispatch } from "./features/store";
 import useAuth from "./utils/customHooks/useAuth";
 import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 
@@ -67,7 +68,7 @@ function App() {
               path="/messages"
               element={
                 <ProtectRoute isSignedIn={isSignedIn}>
-                  <div>Messages</div>
+                  <RightPanel />
                 </ProtectRoute>
               }
             ></Route>

@@ -50,12 +50,12 @@ export default function Navbar() {
                 {t("home")}
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item d-block d-lg-none">
               <Link className="nav-link" to="/messages">
                 {t("messages")}
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item d-block d-lg-none">
               <Link className="nav-link" to="/notifications">
                 {t("notifications")}
               </Link>
