@@ -73,22 +73,6 @@ function App() {
               }
             ></Route>
             <Route
-              path="/profile"
-              element={
-                <ProtectRoute isSignedIn={isSignedIn}>
-                  <div>Profile</div>
-                </ProtectRoute>
-              }
-            ></Route>
-            <Route
-              path="/notifications"
-              element={
-                <ProtectRoute isSignedIn={isSignedIn}>
-                  <div>Notifications</div>
-                </ProtectRoute>
-              }
-            ></Route>
-            <Route
               path="/add-publication"
               element={
                 <ProtectRoute isSignedIn={isSignedIn}>

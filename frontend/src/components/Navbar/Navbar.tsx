@@ -74,15 +74,6 @@ export default function Navbar() {
                   {t("messages")}
                 </Link>
               </li>
-              <li className="nav-item d-block d-lg-none">
-                <Link
-                  className="nav-link"
-                  to="/notifications"
-                  onClick={closeNavbar}
-                >
-                  {t("notifications")}
-                </Link>
-              </li>
               <li className="nav-item">
                 <Link
                   className="nav-link"
@@ -106,11 +97,7 @@ export default function Navbar() {
                 >
                   <FontAwesomeIcon icon={faRightFromBracket} rotation={180} />
                 </button>
-                <Link
-                  className="btn btn-primary"
-                  to="/profile"
-                  onClick={closeNavbar}
-                >
+                <Link className="btn btn-primary" to="/" onClick={closeNavbar}>
                   <FontAwesomeIcon icon={faCircleUser} size="xl" />
                 </Link>
               </div>
