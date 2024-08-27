@@ -1,13 +1,12 @@
 import {
   ArgumentsHost,
-  BadRequestException,
   Catch,
   HttpException,
   UnauthorizedException,
   WsExceptionFilter,
 } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
-import { Socket } from 'Socket.io';
+import { Socket } from 'socket.io';
 
 @Catch(WsException, UnauthorizedException)
 export class WsExceptionsFilter implements WsExceptionFilter {
