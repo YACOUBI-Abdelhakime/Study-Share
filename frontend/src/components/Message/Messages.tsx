@@ -1,14 +1,16 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { WebSocketContext } from "../../App";
 import { getSelectedChat } from "../../features/chat/asyncThuks";
 import { Chat } from "../../features/chat/types/schemas/Chat";
 import { AppDispatch } from "../../features/store";
 import MessageComponent from "./Message";
 import MessageInput from "./MessageInput";
 import "./Messages.css";
+import { Message } from "../../features/chat/types/schemas/Message";
 
 export default function Messages() {
   const { t } = useTranslation();
@@ -28,9 +30,11 @@ export default function Messages() {
     return chat.participants.filter((member) => member._id !== userId)[0]._id;
   };
 
+  const socket = useContext(WebSocketContext).socket;
+
   useEffect(() => {
     if (selectedChatId) {
-      dispatch(getSelectedChat());
+      dispatch(getSelectedChat({ socket }));
     }
   }, [selectedChatId]);
 
@@ -38,6 +42,19 @@ export default function Messages() {
     if (messagesScrollbarRef.current) {
       messagesScrollbarRef.current.scrollTop =
         messagesScrollbarRef.current.scrollHeight;
+    }
+    // Make message read if selected chat id is equal to the chat id
+    if (chat) {
+      const messages = [...chat.messages].reverse();
+      for (let i = 0; i < messages.length; i++) {
+        const message: Message = messages[i];
+        if (message.senderId !== userId && !message.read) {
+          // Mark message as read
+          socket.emit("message-read", { messageId: message._id });
+        } else {
+          break;
+        }
+      }
     }
   }, [chat]);
 

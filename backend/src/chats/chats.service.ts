@@ -9,6 +9,9 @@ import { CreateChatDto } from './dtos/create.chat.dto';
 import { Chat } from './schemas/chat.schema';
 import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
 import { checkChatParticipants } from './utils/check.chat.participants';
+import { MessageReadDto } from 'src/messages/dtos/message.read.dto';
+import { User } from 'src/users/schemas/user.schema';
+import { Server } from 'socket.io';
 
 @Injectable()
 export class ChatsService {
@@ -63,13 +66,14 @@ export class ChatsService {
 
   async getChat(chatId: string, payload): Promise<Chat> {
     // Get user id from jwt payload
+    const chatIdAsObjectId = Types.ObjectId.createFromHexString(chatId);
     const senderIdAsObjectId = Types.ObjectId.createFromHexString(
       payload.user._id,
     );
 
     let chat = await this.chatModel
       .findOne({
-        _id: chatId,
+        _id: chatIdAsObjectId,
         participants: senderIdAsObjectId,
       })
       .populate({
@@ -123,6 +127,7 @@ export class ChatsService {
     if (!chat) {
       // Chat not found, create new one
       const newChat: Chat = {
+        _id: null,
         chatName: null,
         participants: participants,
         messages: [],
@@ -185,5 +190,25 @@ export class ChatsService {
       }
     });
     return updatedChat;
+  }
+
+  async messageRead(
+    messageReadDto: MessageReadDto,
+  ): Promise<{ chat: Chat; message: Message }> {
+    const updatedMessage = await this.messagesService.messageRead(
+      messageReadDto.messageId,
+    );
+    const messageIdAsObjectId = Types.ObjectId.createFromHexString(
+      messageReadDto.messageId,
+    );
+    const chat = await this.chatModel
+      .findOne({
+        messages: messageIdAsObjectId,
+      })
+      .populate('participants', '-password');
+    return {
+      chat: chat,
+      message: updatedMessage,
+    };
   }
 }

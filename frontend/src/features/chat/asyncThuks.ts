@@ -2,9 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 import { SERVER_URL } from "../../utils/constantes/urls";
-import { onMessageAdded } from "./chatSlice";
+import { onMessageAdded, onMessageRead } from "./chatSlice";
 import { SendMessageDto } from "./types/dtos/sendMessageDto";
 import { CreateChatDto } from "./types/dtos/createChatDto";
+import { Chat } from "./types/schemas/Chat";
+import { Message } from "./types/schemas/Message";
 
 export const getChats = createAsyncThunk(
   "chatReducer/getChats",
@@ -27,7 +29,14 @@ export const getChats = createAsyncThunk(
 
 export const getSelectedChat = createAsyncThunk(
   "chatReducer/getSelectedChat",
-  async (_, thunkAPI) => {
+  async (
+    {
+      socket,
+    }: {
+      socket: Socket;
+    },
+    thunkAPI
+  ) => {
     const state: any = thunkAPI.getState();
     const token = state.userReducer.user.token;
     const selectedChatId = state.chatReducer.selectedChatId;
@@ -35,6 +44,7 @@ export const getSelectedChat = createAsyncThunk(
     if (!selectedChatId) {
       return null;
     }
+    let chat: Chat;
     try {
       const response = await axios.get(
         `${SERVER_URL}/chats/${selectedChatId}`,
@@ -45,9 +55,53 @@ export const getSelectedChat = createAsyncThunk(
           },
         }
       );
-      return response.data;
+      chat = response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue("something went wrong");
+    }
+
+    // Read all unread messages
+    thunkAPI.dispatch(
+      readMessage({
+        socket: socket,
+        messages: chat.messages,
+        userId: state.userReducer.user._id,
+      })
+    );
+
+    return chat;
+  }
+);
+
+export const readMessage = createAsyncThunk(
+  "chatReducer/readMessage",
+  async ({
+    socket,
+    messages,
+    userId,
+  }: {
+    socket: Socket;
+    messages: Message[];
+    userId: string;
+  }) => {
+    if (!socket) {
+      console.error("Socket is not connected");
+      return;
+    }
+
+    for (let i = 0; i < messages.length; i++) {
+      const message = messages[i];
+      if (message.senderId !== userId && message.read === false) {
+        // Mark message as read
+        try {
+          socket.emit("message-read", { messageId: message._id });
+        } catch (error) {
+          console.error("WebSocket setup failed:", error);
+          return;
+        }
+      } else {
+        break;
+      }
     }
   }
 );
@@ -93,12 +147,17 @@ export const connectSocket = createAsyncThunk(
         console.log("WebSocket connected id:", socket?.id);
         setSocket(socket);
       });
+
       socket.on("message", (chat) => {
         thunkAPI.dispatch(onMessageAdded(chat));
       });
 
-      socket.on("disconnect", (r) => {
-        console.error("Socket was disconnect>> ", r);
+      socket.on("message-read", (chatIdAndMessage) => {
+        thunkAPI.dispatch(onMessageRead(chatIdAndMessage));
+      });
+
+      socket.on("disconnect", () => {
+        console.error("Socket was disconnected");
         setSocket(null);
       });
 
@@ -120,7 +179,6 @@ export const sendMessage = createAsyncThunk(
     socket: Socket;
     sendMessageDto: SendMessageDto;
   }) => {
-    console.log("sendMessage() id:", socket?.id);
     if (!socket) {
       console.error("Socket is not connected");
       return;

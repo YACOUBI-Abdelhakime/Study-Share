@@ -6,6 +6,7 @@ import {
   getSelectedChat,
   sendMessage,
 } from "./asyncThuks";
+import { Message } from "./types/schemas/Message";
 import { ChatState } from "./types/state/ChatState";
 
 const initialState: ChatState = {
@@ -41,6 +42,33 @@ const chatSlice = createSlice({
         });
       }
     },
+    onMessageRead: (state, action) => {
+      const chatId: string = action.payload.chatId;
+      const message: Message = action.payload.message;
+
+      // Update message in chats
+      for (let i = 0; i < state.chats.length; i++) {
+        if (state.chats[i]._id === chatId) {
+          for (let j = 0; j < state.chats[i].messages.length; j++) {
+            if (state.chats[i].messages[j]._id === message._id) {
+              state.chats[i].messages[j] = message;
+              break;
+            }
+          }
+          break;
+        }
+      }
+      // Update message in selected chat
+      if (state.selectedChat && state.selectedChat._id === chatId) {
+        for (let i = 0; i < state.selectedChat.messages.length; i++) {
+          if (state.selectedChat.messages[i]._id === message._id) {
+            state.selectedChat.messages[i] = message;
+            break;
+          }
+        }
+      }
+    },
+
     onSelectedChat: (state, action) => {
       if (action.payload === "") {
         state.selectedChat = null;
@@ -133,7 +161,8 @@ const chatSlice = createSlice({
 });
 
 /// Export synchronous actions from productSlice.actions
-export const { onMessageAdded, onSelectedChat } = chatSlice.actions;
+export const { onMessageAdded, onMessageRead, onSelectedChat } =
+  chatSlice.actions;
 
 /// Export comment slice reducer
 export default chatSlice.reducer;

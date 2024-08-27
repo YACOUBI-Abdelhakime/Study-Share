@@ -30,4 +30,20 @@ export class MessagesService {
 
     return createdMessage;
   }
+
+  async messageRead(messageId: string): Promise<
+    Message & {
+      _id: Types.ObjectId;
+    }
+  > {
+    const messageIdAsObjectId = Types.ObjectId.createFromHexString(messageId);
+
+    await this.messageModel.updateOne(
+      { _id: messageIdAsObjectId },
+      { read: true },
+      { new: true },
+    );
+
+    return this.messageModel.findById(messageIdAsObjectId);
+  }
 }

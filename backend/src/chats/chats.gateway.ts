@@ -15,6 +15,8 @@ import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
 import { ChatsService } from './chats.service';
 import { Chat } from './schemas/chat.schema';
 import { User } from 'src/users/schemas/user.schema';
+import { MessageReadDto } from 'src/messages/dtos/message.read.dto';
+import { Message } from 'src/messages/schemas/message.schema';
 
 @UseGuards(WsJwtAuthGuard)
 @UseFilters(new WsExceptionsFilter())
@@ -89,7 +91,39 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (participant._id != senderId) {
         updatedChat.chatName = participant.name;
       }
-    }); 
+    });
     this.server.to(senderSocketId).emit('message', updatedChat);
+  }
+
+  @UsePipes(new WsValidationPipe())
+  @UseFilters(new WsExceptionsFilter())
+  @SubscribeMessage('message-read')
+  async handleMessageRead(
+    sender: Socket,
+    messageReadDto: MessageReadDto,
+  ): Promise<void> {
+    let updatedChat: Chat;
+    let updatedMessage: Message;
+    try {
+      // Update message read status in the database
+      const chatIdAndMessage =
+        await this.chatsService.messageRead(messageReadDto);
+      updatedChat = chatIdAndMessage.chat;
+      updatedMessage = chatIdAndMessage.message;
+    } catch (error) {
+      // Emit the error message to the sender
+      sender.emit('error', { message: error.message });
+      return;
+    }
+
+    updatedChat.participants.forEach((participant) => {
+      const userSocketId = this.connectedUsers.get(participant._id.toString());
+      if (userSocketId) {
+        this.server.to(userSocketId).emit('message-read', {
+          chatId: updatedChat._id,
+          message: updatedMessage,
+        });
+      }
+    });
   }
 }
