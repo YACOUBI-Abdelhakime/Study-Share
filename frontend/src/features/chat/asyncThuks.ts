@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
-import { SERVER_URL } from "../../utils/constantes/urls";
+import { SERVER_URL, WEBSOCKET_URL } from "../../utils/constants/urls";
 import { onMessageAdded, onMessageRead } from "./chatSlice";
 import { SendMessageDto } from "./types/dtos/sendMessageDto";
 import { CreateChatDto } from "./types/dtos/createChatDto";
@@ -136,7 +136,7 @@ export const connectSocket = createAsyncThunk(
     const token = state.userReducer.user.token;
     let socket: Socket | null = null;
     try {
-      socket = io("http://localhost:3001/", {
+      socket = io(WEBSOCKET_URL, {
         auth: {
           token: token,
         },
