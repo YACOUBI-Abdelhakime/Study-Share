@@ -3,15 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { WsException } from '@nestjs/websockets';
 import { Model, Types } from 'mongoose';
 import { AddMessageDto } from 'src/messages/dtos/add.message.dto';
+import { MessageReadDto } from 'src/messages/dtos/message.read.dto';
 import { MessagesService } from 'src/messages/messages.service';
 import { Message } from 'src/messages/schemas/message.schema';
 import { CreateChatDto } from './dtos/create.chat.dto';
 import { Chat } from './schemas/chat.schema';
 import { addMessageToChat as addMessageIdToChat } from './utils/add.message.to.chat';
 import { checkChatParticipants } from './utils/check.chat.participants';
-import { MessageReadDto } from 'src/messages/dtos/message.read.dto';
-import { User } from 'src/users/schemas/user.schema';
-import { Server } from 'socket.io';
 
 @Injectable()
 export class ChatsService {
@@ -127,7 +125,6 @@ export class ChatsService {
     if (!chat) {
       // Chat not found, create new one
       const newChat: Chat = {
-        _id: null,
         chatName: null,
         participants: participants,
         messages: [],

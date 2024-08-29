@@ -8,8 +8,6 @@ import { Message } from 'src/messages/schemas/message.schema';
   versionKey: false,
 })
 export class Chat {
-  _id: string | null;
-
   @Prop()
   chatName: string | null;
 

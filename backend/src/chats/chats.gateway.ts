@@ -120,7 +120,7 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const userSocketId = this.connectedUsers.get(participant._id.toString());
       if (userSocketId) {
         this.server.to(userSocketId).emit('message-read', {
-          chatId: updatedChat._id,
+          chatId: (updatedChat as Chat & { _id: string })._id,
           message: updatedMessage,
         });
       }
