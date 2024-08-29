@@ -24,9 +24,7 @@ export default function AddPublicationBody() {
     let list: string[] = [...tagValuesFromStore].sort((a, b) =>
       a.localeCompare(b)
     );
-    list = list.map(
-      (tag) => tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase()
-    );
+    list = list.map((tag) => tag.toLowerCase());
     setTagValues(list);
   }, [tagValuesFromStore]);
 
@@ -136,7 +134,7 @@ export default function AddPublicationBody() {
                         {tagValues.map((tag) => (
                           <li key={tag} onClick={() => selectTag(tag)}>
                             <p className="dropdown-item my-0 py-1 cursor-pointer">
-                              {tag}
+                              {t(tag)}
                             </p>
                           </li>
                         ))}
@@ -149,13 +147,14 @@ export default function AddPublicationBody() {
                             key={tag}
                             className="badge bg-light mx-1 py-2 text-dark"
                           >
-                            <span className="mx-2 ">{tag}</span>
+                            <span className="mx-2 ">{t(tag)}</span>
                             <FontAwesomeIcon
                               icon={faCircleXmark}
                               size="lg"
                               style={{ color: "#bb5539" }}
                               className="me-2"
                               onClick={() => deleteSelectedTag(tag)}
+                              role="button"
                             />
                           </div>
                         ))}
