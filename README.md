@@ -1,45 +1,44 @@
-<h1 align="center">
-  🚀 Study Share 🚀
-</h1>
+<div align="center">
+  <a href="http://study-share.s3-website.eu-west-3.amazonaws.com/">
+    <img src="frontend/public/assets/logo-1x2.svg" alt="logo" width="200"/>
+  </a>
+  <a href="http://study-share.s3-website.eu-west-3.amazonaws.com/">
+    <p style="font-size: 30px; color: white;">🚀 Study Share 🚀</p>
+  </a>
+</div>
 
 ## Technologies 🧑🏻‍💻🛠️
 
-    - ReactJs Redux
-    - NestJS Mongoose
-    - MongoDB
+- [React.js](https://react.dev/) [Redux](https://redux.js.org/)
+- [NestJS](https://nestjs.com/) [Mongoose](https://mongoosejs.com/docs/)
+- [MongoDB](https://www.mongodb.com/en-us)
 
-## Fonctionalités de l'MVP 💪💪
+## MVP Features 💪💪
 
-    - [x] Authentification avec email/mot de passe
+- [x] Authentication with email/password
+- [x] Secure APIs with JWT authentication
+- [ ] Account creation with email verification
+- [x] Publication to ask for help with a subject or topic
+- [x] Add comments to publications
+- [x] Mark a publication as resolved and stop accepting comments
+- [x] Real-time private chat
+- [ ] Advanced search function with filters by subject/topic
+- [ ] Send notifications when users receive replies to their publications or private messages
+- [ ] File sharing (pdf, img) in publications and private chat
 
-    - [ ] Création de compte et validation d'email
-
-    - [x] Publier des post pour demander de l'aide sur une matière ou un sujet
-
-    - [x] Ajouter des commentaires aux posts
-
-    - [x] Marquer un post comme résolu et arrêter d'accepter les commentaires
-
-    - [ ] Fonction de recherche avancée, filtres par matière/sujet
-
-    - [ ] Chat privé en temps réel
-
-    - [ ] Envoyer des notifications lorsqu'ils reçoivent des réponses à leurs posts ou messages privés
-
-    - [ ] Partage de fichiers (pdf, img) sur les posts et chat privé ( `ce n'est pas une priorité` )
-
-## Structure de la base de données 💾 🗂️
+## Database structure 💾 🗂️
 
 ### Collection `Users` 📄
 
 ```json
 {
   "_id": "ObjectId",
-  "email": "String",        // Email de l'utilisateur (unique)
-  "password": "String",     // Hash du mot de passe
-  "name": "String",         // Nom de l'utilisateur
-  "dateOfBirth": "Date",    // Date de naissance de l'utilisateur
-  "isVerified": "Boolean",  // Statut de vérification de l'email
+  "email": "String",
+  // Password hash
+  "password": "String",
+  "name": "String",
+  "dateOfBirth": "Date",
+  "isVerified": "Boolean"
 }
 ```
 
@@ -48,18 +47,20 @@
 ```json
 {
   "_id": "ObjectId",
-  "userId": "ObjectId",     // Référence à l'utilisateur ayant créé le post
-  "title": "String",        // Titre du post
-  "content": "String",      // Contenu du post
-  "attachments": [          // Fichiers joints (PDF, images)
+  "userId": "ObjectId",
+  "title": "String",
+  "content": "String",
+  "attachments": [
     {
-      "url": "String",      // URL du fichier
-      "type": "String"      // Type de fichier (e.g., "pdf", "image")
+      "url": "String",
+      // [pdf, image, ...]
+      "type": "String"
     }
   ],
-  "commentsCount": "Number",// Nombre de commentaires
-  "status": "String",       // Statut du post (e.g., "open", "closed")
-  "tags": [ "String" ]      // Tags associés au post [Mathematics, Physics, French, ...]
+  "commentsCount": "Number",
+  "isDiscussionOpen": "Boolean",
+  // [Mathematics, Physics, French, ...]
+  "tags": ["String"]
 }
 ```
 
@@ -68,9 +69,9 @@
 ```json
 {
   "_id": "ObjectId",
-  "postId": "ObjectId",     // Référence au post commenté
-  "userId": "ObjectId",     // Référence à l'utilisateur ayant commenté
-  "content": "String",      // Contenu du commentaire
+  "publicationId": "ObjectId",
+  "userId": "ObjectId",
+  "content": "String"
 }
 ```
 
@@ -79,24 +80,19 @@
 ```json
 {
   "_id": "ObjectId",
-  "participants": [         // Liste des utilisateurs participants à la conversation
-    "ObjectId",
-    "ObjectId"
-  ],
-  "messages": [             // Liste des messages dans la conversation
-    {
-      "senderId": "ObjectId", // Référence à l'utilisateur ayant envoyé le message
-      "content": "String",  // Contenu du message
-      "attachments": [      // Fichiers joints au message
-        {
-          "url": "String",  // URL du fichier
-          "type": "String"  // Type de fichier [pdf, image]
-        }
-      ],
-      "createdAt": "Date"   // Date d'envoi du message
-    }
-  ],
-  "lastMessageAt": "Date"   // Date du dernier message envoyé pour trier les conversations
+  "participants": ["ObjectId", "ObjectId"],
+  "messages": ["ObjectId", "ObjectId", "..."]
+}
+```
+
+### Collection `Messages` 📄
+
+```json
+{
+  "_id": "ObjectId",
+  "senderId": "ObjectId",
+  "content": "String",
+  "read": "Boolean"
 }
 ```
 
@@ -105,10 +101,12 @@
 ```json
 {
   "_id": "ObjectId",
-  "userId": "ObjectId",     // Référence à l'utilisateur qui reçoit la notification
-  "type": "String",         // Type de notification [comment, message]
-  "referenceId": "ObjectId", // ID du post ou du message concerné
-  "message": "String",      // Message de la notification
-  "isRead": "Boolean"       // Statut de lecture de la notification
+  "userId": "ObjectId",
+  // [comment, message, ...]
+  "type": "String",
+  // ID of the post or message concerned
+  "referenceId": "ObjectId",
+  "message": "String",
+  "isRead": "Boolean"
 }
 ```

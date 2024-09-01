@@ -32,8 +32,8 @@
 $ npm install
 ```
 
-## Add environment variables
-
+## Add environment variables to .env file
+ Show .env.example
 ```javascript
 DB_URI=''
 // App ip to enable CORS
