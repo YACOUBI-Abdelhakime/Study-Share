@@ -8,10 +8,13 @@ import { User } from "../../features/user/types/User";
 import Chats from "../Chat/Chats";
 import Messages from "../Message/Messages";
 import "./RightPanel.css";
+import Contacts from "../Contact/Contacts";
+import { useState } from "react";
 
 export default function RightPanel() {
   const dispatch: AppDispatch = useDispatch();
   const { t } = useTranslation();
+  const [isContactsShown, setIsContactsShown] = useState(false);
   const selectedChatId = useSelector((state: any) => {
     return state.chatReducer.selectedChatId;
   });
@@ -57,10 +60,43 @@ export default function RightPanel() {
               </div>
             </div>
           ) : (
-            <span className="h5 mx-2">{t("messages")}</span>
+            <div className="d-flex">
+              <div
+                className={
+                  isContactsShown
+                    ? "mx-2 px-3 bg-white rounded-5 shadow-sm"
+                    : "mx-2 px-3 bg-primary rounded-5 shadow-sm"
+                }
+                role="button"
+                onClick={() => setIsContactsShown(false)}
+              >
+                <span className="h6">{t("messages")}</span>
+              </div>
+              <div
+                className={
+                  isContactsShown
+                    ? "mx-2 px-3 bg-primary rounded-5 shadow-sm"
+                    : "mx-2 px-3 bg-white rounded-5 shadow-sm"
+                }
+                role="button"
+                onClick={() => setIsContactsShown(true)}
+              >
+                <span className="h6">{t("contacts")}</span>
+              </div>
+            </div>
           )}
         </div>
-        <div>{selectedChatId ? <Messages /> : <Chats />}</div>
+        {
+          <div>
+            {isContactsShown ? (
+              <Contacts closeContacts={() => setIsContactsShown(false)} />
+            ) : selectedChatId ? (
+              <Messages />
+            ) : (
+              <Chats />
+            )}
+          </div>
+        }
       </div>
     </div>
   );

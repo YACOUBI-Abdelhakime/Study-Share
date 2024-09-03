@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User } from './schemas/user.schema';
 
 @Injectable()
@@ -10,13 +10,18 @@ export class UserService {
     private userModel: Model<User>,
   ) {}
 
-  async getProfile(user: any): Promise<User> {
-    let foundUser: User;
+  async getContacts(payload: any): Promise<User[]> {
+    const userIdAsObjectId = Types.ObjectId.createFromHexString(
+      payload.user._id,
+    );
+    let contacts: User[];
     try {
-      foundUser = await this.userModel.findById(user.id);
+      contacts = await this.userModel
+        .find({ _id: { $ne: userIdAsObjectId } })
+        .select('name _id');
     } catch (_) {
       throw new NotFoundException();
     }
-    return foundUser;
+    return contacts;
   }
 }

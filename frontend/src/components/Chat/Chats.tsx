@@ -52,25 +52,4 @@ export default function Chats() {
       </div>
     );
   }
-
-  // return (
-  //   <div className="h-100 bg-light">
-  //     {chats ? (
-  //       <div className="panel-body-height-100 overflow-auto hide-scrollbar">
-  //         {chats.map((chat) => (
-  //           <ChatComponent chat={chat} key={chat._id} />
-  //         ))}
-  //       </div>
-  //     ) : (
-  //       <div className="panel-body-height-100 d-flex justify-content-center align-items-center">
-  //         <FontAwesomeIcon
-  //           icon={faSpinner}
-  //           spin
-  //           size="2x"
-  //           style={{ color: "#5cdb95" }}
-  //         />
-  //       </div>
-  //     )}
-  //   </div>
-  // );
 }

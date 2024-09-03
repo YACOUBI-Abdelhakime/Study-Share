@@ -1,23 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register } from "./asyncThunks";
+import { getContacts, login, register } from "./asyncThunks";
 import { UserState } from "./types/UserState";
 
 const initialState: UserState = {
   user: null,
+  contacts: [],
   isLoading: false,
 };
 
 const userSlice = createSlice({
   name: "userReducer",
   initialState,
-  reducers: {
-    // fnOne: (state, action) => {
-    //   state.products = [...];
-    // },
-    // fnTwo: (state, action) => {
-    //   state.product = [...];
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // User login
@@ -43,12 +37,21 @@ const userSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
+      })
+      // Get contacts
+      .addCase(getContacts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.contacts = action.payload;
+      })
+      .addCase(getContacts.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
       });
   },
 });
-
-/// Export synchronous actions from productSlice.actions
-// export const { fnOne, fnTwo } = productSlice.actions;
 
 /// Export product slice reducer
 export default userSlice.reducer;
