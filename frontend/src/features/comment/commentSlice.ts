@@ -13,7 +13,12 @@ const commentSlice = createSlice({
   initialState,
   reducers: {
     openCommentsPanel: (state, action) => {
-      state.openCommentsPanelPublicationId = action.payload;
+      if (state.openCommentsPanelPublicationId === action.payload) {
+        state.openCommentsPanelPublicationId = "";
+        return;
+      } else {
+        state.openCommentsPanelPublicationId = action.payload;
+      }
     },
   },
   extraReducers: (builder) => {

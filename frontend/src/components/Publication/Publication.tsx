@@ -41,6 +41,9 @@ export default function PublicationComponent({
     openCommentsPanelPublicationId == publication._id;
 
   const onClickOpenCommentsPanel = (publicationId: string) => {
+    if (publication.commentsCount === 0 && !publication.isDiscussionOpen) {
+      return;
+    }
     // Dispatch the action to fetch comments of this publication
     dispatch(getComments(publicationId));
     // Dispatch the action to open the comments panel of this publication
