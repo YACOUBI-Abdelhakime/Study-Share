@@ -119,7 +119,9 @@ const chatSlice = createSlice({
         if (state.selectedChat) {
           state.selectedChat.messages = state.selectedChat.messages.reverse();
         }
-        const chatAlreadyExists = state.chats.includes(action.payload);
+        const chatAlreadyExists = state.chats.some(
+          (chat) => chat._id == action.payload._id
+        );
         if (chatAlreadyExists) {
           return;
         }

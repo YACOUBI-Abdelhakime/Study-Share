@@ -56,11 +56,13 @@ export default function PublicationComponent({
   };
 
   const onUserNameClicked = () => {
-    if (isMyPublication) {
-      // Go to profile page
-      navigate("/profile");
-    } else {
+    if (!isMyPublication) {
       dispatch(createChat({ receiverId: publication.userId }));
+      // Check if screen is medium or small
+      const mediaQuery = window.matchMedia("(max-width: 992px)");
+      if (mediaQuery.matches) {
+        navigate("/messages");
+      }
     }
   };
 
