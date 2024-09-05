@@ -12,8 +12,6 @@
   "emailOrPasswordIncorrect": "Email ou mot de passe incorrect !",
   "emailAlreadyExists": "L'email est déjà utilisé. Veuillez en choisir un autre ou vous connecter.",
   "signupDataNotValidate": "Veuillez vérifier vos informations et réessayer.",
-  "pleaseCheckYourEmailToConfirmYourAccount": "Veuillez vérifier votre email pour confirmer votre compte.",
-  "registrationSuccessful": "Inscription réussie:",
   "socialLogin": "Se connecter via les réseaux sociaux",
   "forgotPassword": "Mot de passe oublié !",
   "notifications": "Notifications",
@@ -60,5 +58,11 @@
   "french": "Français",
   "spanish": "Espagnol",
   "german": "Allemand",
-  "italian": "Italien"
+  "italian": "Italien",
+  "Success :": "Succès :",
+  "Error :": "Erreur :",
+  "Email not verified": "Veuillez vérifier votre email et réessayer",
+  "Email is already used. Please choose another one or login": "L'email est déjà utilisé. Veuillez en choisir un autre ou vous connecter",
+  "Email or password not correct": "Email ou mot de passe incorrect !",
+  "Please check your email to confirm your account": "Veuillez vérifier votre email pour confirmer votre compte"
 }

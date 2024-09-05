@@ -18,6 +18,8 @@ import {
   validatePassword,
   validatePasswordConfirmation,
 } from "../../../utils/formValidations/FormValidations";
+import { addAlertMessage } from "../../../features/global/globalSlice";
+import { AlertType } from "../../../features/global/types/AlertType";
 
 export default function SignupForm() {
   const { t } = useTranslation();
@@ -30,8 +32,6 @@ export default function SignupForm() {
     password: "",
     confirmation: "",
   });
-  const [error, setError] = useState<string | null>(null);
-  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
   // Calculate the date 6 years ago
   const currentDate = new Date();
   const sixYearsAgo = new Date(
@@ -47,11 +47,6 @@ export default function SignupForm() {
     });
   };
 
-  const closeAlert = () => {
-    setShowSuccessAlert(false);
-    navigate("/login");
-  };
-
   let onSubmitSignup = (e: any, user: SignupDto) => {
     e.preventDefault();
     if (
@@ -64,35 +59,25 @@ export default function SignupForm() {
       dispatch(register(user))
         .unwrap()
         .then(() => {
-          // Open popup to confirm email
-          setShowSuccessAlert(true);
+          navigate("/login");
         })
         .catch(() => {
-          setError(t("emailAlreadyExists"));
+          addAlertMessage({
+            message: "emailAlreadyExists",
+            type: AlertType.ERROR,
+          });
         });
     } else {
-      setError(t("signupDataNotValidate"));
+      dispatch(
+        addAlertMessage({
+          message: "signupDataNotValidate",
+          type: AlertType.ERROR,
+        })
+      );
     }
   };
   return (
-    <div className="col-12 col-md-7 bg-primary p-0 position-relative">
-      {showSuccessAlert && (
-        <div
-          className="alert alert-success alert-dismissible fade show rounded-0 position-absolute top-0 start-0 w-100"
-          role="alert"
-          style={{ zIndex: 10 }}
-        >
-          <strong>{t("registrationSuccessful")} </strong>
-          {t("pleaseCheckYourEmailToConfirmYourAccount")}
-          <button
-            className="btn btn-close me-3"
-            data-dismiss="alert"
-            aria-label="Close"
-            aria-hidden="true"
-            onClick={closeAlert}
-          ></button>
-        </div>
-      )}
+    <div className="col-12 col-md-7 bg-primary p-0">
       <div className="h-100 d-flex align-items-center justify-content-center bg-light">
         <div className="p-sm-3 p-md-5 p-2">
           <div className="text-center mb-5">
@@ -127,11 +112,6 @@ export default function SignupForm() {
             <p className="text-center mx-3">{t("or")}</p>
             <hr className="w-100" />
           </div>
-          {error && (
-            <div className="text-center d-flex justify-content-center">
-              <p className="text-danger">{error}</p>
-            </div>
-          )}
 
           <form>
             <div className="row">

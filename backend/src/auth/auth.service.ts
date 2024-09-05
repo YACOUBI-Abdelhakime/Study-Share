@@ -33,10 +33,10 @@ export class AuthService {
     }
 
     if (!match) {
-      throw new UnauthorizedException('Email or password not correct !');
+      throw new UnauthorizedException('Email or password not correct');
     }
     if (!user.isVerified) {
-      throw new ForbiddenException('Email not verified !');
+      throw new ForbiddenException('Email not verified');
     }
     let token: string = this.jwtService.sign({
       user: {
@@ -60,6 +60,13 @@ export class AuthService {
     try {
       createdUser = await this.userModel.create(user);
     } catch (error) {
+      console.log(error.code);
+      if (error.code === 11000) {
+        // Duplicate email
+        throw new BadRequestException(
+          'Email is already used. Please choose another one or login',
+        );
+      }
       throw new BadRequestException(error.message);
     }
     await this.sendVerificationEmail(user.email);

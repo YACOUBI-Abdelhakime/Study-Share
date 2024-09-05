@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import "./App.css";
+import Alert from "./components/Alert/Alert";
 import Navbar from "./components/Navbar/Navbar";
 import RightPanel from "./components/RightPanal/RightPanel";
 import { connectSocket } from "./features/chat/asyncThuks";
@@ -14,7 +15,7 @@ import SignupScreen from "./screens/SignupScreen/SignupScreen";
 import useAuth from "./utils/customHooks/useAuth";
 import ProtectRoute from "./utils/ProtectRoutes/ProtectRoute";
 
-export const WebSocketContext = createContext<any>(null);
+export const WebSocketContext = createContext<any>(null); 
 
 function App() {
   const isSignedIn = useAuth();
@@ -30,7 +31,8 @@ function App() {
     <WebSocketContext.Provider value={{ socket, setSocket }}>
       <BrowserRouter>
         <Navbar />
-        <div style={{ height: `calc(100vh - 55px)`, marginTop: "55px" }}>
+        <Alert />
+        <div className="page-body">
           <Routes>
             <Route
               path="/login"
