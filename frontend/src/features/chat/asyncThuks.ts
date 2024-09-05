@@ -7,6 +7,8 @@ import { SendMessageDto } from "./types/dtos/sendMessageDto";
 import { CreateChatDto } from "./types/dtos/createChatDto";
 import { Chat } from "./types/schemas/Chat";
 import { Message } from "./types/schemas/Message";
+import { AlertType } from "../global/types/AlertType";
+import { addAlertMessage } from "../global/globalSlice";
 
 export const getChats = createAsyncThunk(
   "chatReducer/getChats",
@@ -22,6 +24,9 @@ export const getChats = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -57,6 +62,9 @@ export const getSelectedChat = createAsyncThunk(
       );
       chat = response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
 
@@ -121,6 +129,9 @@ export const createChat = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -164,8 +175,10 @@ export const connectSocket = createAsyncThunk(
       socket.on("error", (error) => {
         console.error("WebSocket error:", error);
       });
-    } catch (error) {
-      console.error("WebSocket setup failed:", error);
+    } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
     }
   }
 );

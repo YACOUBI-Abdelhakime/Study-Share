@@ -31,6 +31,11 @@
   background: linear-gradient(to right, #f8f9fa, #dcdcdd);
 }
 
+.page-body {
+  height: calc(100vh - 55px);
+  margin-top: 55px;
+}
+
 .body-height-100 {
   height: calc(100vh - 55px);
 }

@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddCommentDto } from "./types/dtos/addCommentDto";
 import { SERVER_URL } from "../../utils/constants/urls";
+import { AlertType } from "../global/types/AlertType";
+import { addAlertMessage } from "../global/globalSlice";
 
 export const getComments = createAsyncThunk(
   "commentReducer/getComments",
@@ -20,6 +22,9 @@ export const getComments = createAsyncThunk(
       );
       return { publicationId, comments: response.data };
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -39,6 +44,9 @@ export const addComment = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }

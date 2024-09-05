@@ -5,6 +5,7 @@ import userSlice from "./user/userSlice.js";
 import publicationSlice from "./publication/publicationSlice.js";
 import commentSlice from "./comment/commentSlice.js";
 import chatSlice from "./chat/chatSlice.js";
+import globalSlice from "./global/globalSlice.js";
 
 // Redux-persist configuration for user reducer
 const persistConfigUserReducer = {
@@ -30,6 +31,11 @@ const persistConfigChatReducer = {
   storage,
 };
 
+// Redux-persist configuration for global reducer
+const persistConfigGlobalReducer = {
+  key: "globalReducer",
+  storage,
+};
 const rootReducer = {
   userReducer: persistReducer(persistConfigUserReducer, userSlice),
   publicationReducer: persistReducer(
@@ -38,6 +44,7 @@ const rootReducer = {
   ),
   commentReducer: persistReducer(persistConfigCommentReducer, commentSlice),
   chatReducer: persistReducer(persistConfigChatReducer, chatSlice),
+  globalReducer: persistReducer(persistConfigGlobalReducer, globalSlice),
 };
 
 const store = configureStore({

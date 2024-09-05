@@ -8,9 +8,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../../features/store";
 import { login } from "../../../features/user/asyncThunks";
 import { LoginDto } from "../../../features/user/types/dtos/LoginDto";
-import { AppDispatch } from "../../../features/store";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ export default function LoginForm() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string | null>(null);
 
   let onUpdateLoginData = (e: any) => {
     setLoginData({
@@ -36,9 +35,6 @@ export default function LoginForm() {
       .unwrap()
       .then(() => {
         navigate("/home");
-      })
-      .catch(() => {
-        setError(t("emailOrPasswordIncorrect"));
       });
   };
   return (
@@ -77,11 +73,6 @@ export default function LoginForm() {
             <p className="text-center mx-3">{t("or")}</p>
             <hr className="w-100" />
           </div>
-          {error && (
-            <div className="text-center d-flex justify-content-center">
-              <p className="text-danger">{error}</p>
-            </div>
-          )}
           <form>
             <div className="mb-3">
               <input

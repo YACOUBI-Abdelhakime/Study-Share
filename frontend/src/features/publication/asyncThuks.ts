@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AddPublicationDto } from "./types/dtos/AddPublicationDto";
 import { SERVER_URL } from "../../utils/constants/urls";
+import { AlertType } from "../global/types/AlertType";
+import { addAlertMessage } from "../global/globalSlice";
 
 export const getPublications = createAsyncThunk(
   "publicationReducer/getPublications",
@@ -17,6 +19,9 @@ export const getPublications = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -39,6 +44,9 @@ export const getPublicationTagValues = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -61,6 +69,9 @@ export const togglePublicationDiscussion = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -84,6 +95,9 @@ export const addPublication = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
@@ -107,6 +121,9 @@ export const deletePublication = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
+      const message: string = error.response.data.message;
+      const type: AlertType = AlertType.ERROR;
+      thunkAPI.dispatch(addAlertMessage({ message, type }));
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
