@@ -6,6 +6,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../../features/store";
+import { register } from "../../../features/user/asyncThunks";
 import { SignupDto } from "../../../features/user/types/dtos/SignupDto";
 import {
   validateDate,
@@ -14,10 +18,6 @@ import {
   validatePassword,
   validatePasswordConfirmation,
 } from "../../../utils/formValidations/FormValidations";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../features/store";
-import { register } from "../../../features/user/asyncThunks";
-import { useNavigate } from "react-router-dom";
 
 export default function SignupForm() {
   const { t } = useTranslation();
@@ -31,6 +31,7 @@ export default function SignupForm() {
     confirmation: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
   // Calculate the date 6 years ago
   const currentDate = new Date();
   const sixYearsAgo = new Date(
@@ -46,6 +47,11 @@ export default function SignupForm() {
     });
   };
 
+  const closeAlert = () => {
+    setShowSuccessAlert(false);
+    navigate("/login");
+  };
+
   let onSubmitSignup = (e: any, user: SignupDto) => {
     e.preventDefault();
     if (
@@ -58,7 +64,8 @@ export default function SignupForm() {
       dispatch(register(user))
         .unwrap()
         .then(() => {
-          navigate("/home");
+          // Open popup to confirm email
+          setShowSuccessAlert(true);
         })
         .catch(() => {
           setError(t("emailAlreadyExists"));
@@ -68,7 +75,24 @@ export default function SignupForm() {
     }
   };
   return (
-    <div className="col-12 col-md-7 bg-primary p-0">
+    <div className="col-12 col-md-7 bg-primary p-0 position-relative">
+      {showSuccessAlert && (
+        <div
+          className="alert alert-success alert-dismissible fade show rounded-0 position-absolute top-0 start-0 w-100"
+          role="alert"
+          style={{ zIndex: 10 }}
+        >
+          <strong>{t("registrationSuccessful")} </strong>
+          {t("pleaseCheckYourEmailToConfirmYourAccount")}
+          <button
+            className="btn btn-close me-3"
+            data-dismiss="alert"
+            aria-label="Close"
+            aria-hidden="true"
+            onClick={closeAlert}
+          ></button>
+        </div>
+      )}
       <div className="h-100 d-flex align-items-center justify-content-center bg-light">
         <div className="p-sm-3 p-md-5 p-2">
           <div className="text-center mb-5">

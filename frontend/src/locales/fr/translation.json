@@ -12,6 +12,8 @@
   "emailOrPasswordIncorrect": "Email ou mot de passe incorrect !",
   "emailAlreadyExists": "L'email est déjà utilisé. Veuillez en choisir un autre ou vous connecter.",
   "signupDataNotValidate": "Veuillez vérifier vos informations et réessayer.",
+  "pleaseCheckYourEmailToConfirmYourAccount": "Veuillez vérifier votre email pour confirmer votre compte.",
+  "registrationSuccessful": "Inscription réussie:",
   "socialLogin": "Se connecter via les réseaux sociaux",
   "forgotPassword": "Mot de passe oublié !",
   "notifications": "Notifications",
