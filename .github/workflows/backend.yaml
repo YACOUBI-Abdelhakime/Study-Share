@@ -80,6 +80,10 @@ jobs:
             echo 'export APP_IP=\"${{secrets.APP_IP}}\"' >> ~/my-server/.env &&
             echo 'export JWT_SECRET=\"${{secrets.JWT_SECRET}}\"' >> ~/my-server/.env &&
             echo 'export JWT_EXPIRES_IN=\"${{secrets.JWT_EXPIRES_IN}}\"' >> ~/my-server/.env &&
+            echo 'export SERVER_URI=\"${{secrets.SERVER_URI}}\"' >> ~/my-server/.env &&
+            echo 'export SMTP_SERVER_HOST=\"${{secrets.SMTP_SERVER_HOST}}\"' >> ~/my-server/.env &&
+            echo 'export SMTP_SERVER_USERNAME=\"${{secrets.SMTP_SERVER_USERNAME}}\"' >> ~/my-server/.env &&
+            echo 'export SMTP_SERVER_PASSWORD=\"${{secrets.SMTP_SERVER_PASSWORD}}\"' >> ~/my-server/.env &&
             if ! grep -q 'source ~/my-server/.env' ~/.bashrc; then
               echo 'source ~/my-server/.env' >> ~/.bashrc
             fi
