@@ -22,6 +22,9 @@ export class User {
   @Prop({ required: true })
   @MinLength(8)
   password: string;
+
+  @Prop({ required: false })
+  emailVerificationToken: string;
 }
 
 export const userSchema = SchemaFactory.createForClass(User);

@@ -21,7 +21,8 @@ export const login = createAsyncThunk(
       user.token = response.data.token;
       return user;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue("something went wrong");
+      // Dispatch an alert to show the error message
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -31,10 +32,7 @@ export const register = createAsyncThunk(
   async (user: SignupDto, thunkAPI) => {
     try {
       const response = await api.post("/auth/register", user);
-      const tokenPayload: any = jwtDecode(response.data.token);
-      let createdUser: User = tokenPayload.user;
-      createdUser.token = response.data.token;
-      return createdUser;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
