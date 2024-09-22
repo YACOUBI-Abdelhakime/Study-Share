@@ -6,10 +6,10 @@ import "./i18n";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import "./custom.bootstrap/main.scss";
 import { Provider } from "react-redux";
-import { persistor, store } from "./features/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
+import "./custom.bootstrap/main.scss";
+import { persistor, store } from "./features/store.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

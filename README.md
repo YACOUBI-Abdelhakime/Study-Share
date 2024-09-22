@@ -17,7 +17,7 @@
 
 - [x] Authentication with email/password
 - [x] Secure APIs with JWT authentication
-- [ ] Account creation with email verification
+- [x] Account creation with email verification
 - [x] Publication to ask for help with a subject or topic
 - [x] Add comments to publications
 - [x] Mark a publication as resolved and stop accepting comments

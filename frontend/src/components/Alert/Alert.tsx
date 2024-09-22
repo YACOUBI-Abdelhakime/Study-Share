@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { emptyAlertMessage } from "../../features/global/globalSlice";
 import { AlertType } from "../../features/global/types/AlertType";
 import { AppDispatch } from "../../features/store";
+import { useEffect } from "react";
 
 export default function Alert() {
   const dispatch: AppDispatch = useDispatch();
@@ -13,6 +14,14 @@ export default function Alert() {
   const closeAlert = () => {
     dispatch(emptyAlertMessage());
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      closeAlert();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [message]);
 
   return (
     <>
