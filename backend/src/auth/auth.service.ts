@@ -14,6 +14,7 @@ import { RegisterDto } from './dtos/register.dto';
 import * as bcrypt from 'bcryptjs';
 import { sendEmail } from 'src/utils/sendEmail';
 
+///
 @Injectable()
 export class AuthService {
   constructor(
